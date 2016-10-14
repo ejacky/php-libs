@@ -16,10 +16,22 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         ),
     );
 
+    public static $classMap = array (
+        'IdiormMethodMissingException' => __DIR__ . '/..' . '/j4mie/idiorm/idiorm.php',
+        'IdiormResultSet' => __DIR__ . '/..' . '/j4mie/idiorm/idiorm.php',
+        'IdiormString' => __DIR__ . '/..' . '/j4mie/idiorm/idiorm.php',
+        'IdiormStringException' => __DIR__ . '/..' . '/j4mie/idiorm/idiorm.php',
+        'Model' => __DIR__ . '/..' . '/j4mie/paris/paris.php',
+        'ORM' => __DIR__ . '/..' . '/j4mie/idiorm/idiorm.php',
+        'ORMWrapper' => __DIR__ . '/..' . '/j4mie/paris/paris.php',
+        'ParisMethodMissingException' => __DIR__ . '/..' . '/j4mie/paris/paris.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixesPsr0 = ComposerStaticInited1870727e337fc27a61bfb0865431ad::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInited1870727e337fc27a61bfb0865431ad::$classMap;
 
         }, null, ClassLoader::class);
     }
