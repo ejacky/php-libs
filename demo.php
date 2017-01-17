@@ -3,7 +3,7 @@ require 'vendor/' . 'autoload.php';
 
 use Pheanstalk\Pheanstalk;
 
-$pheanstalk = new Pheanstalk('192.168.1.233');
+$pheanstalk = new Pheanstalk('127.0.0.1');
 
 
 $pheanstalk->useTube('testtube')->put('job playload goes here\h');
