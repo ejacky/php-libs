@@ -1,6 +1,11 @@
 {
     "require": {
         "pimple/pimple": "~3.0",
-        "j4mie/paris": "^1.5"
+        "j4mie/paris": "^1.5",
+        "composer/composer": "^1.2",
+        "zphp/zphp": "1.0.x-dev",
+        "mustache/mustache": "^2.11",
+        "anomaly/installer-module": "~2.1.0",
+        "pda/pheanstalk": "^3.1"
     }
 }

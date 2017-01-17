@@ -6,5 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ZPHP\\' => array($vendorDir . '/zphp/zphp'),
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
+    'Mustache' => array($vendorDir . '/mustache/mustache/src'),
 );

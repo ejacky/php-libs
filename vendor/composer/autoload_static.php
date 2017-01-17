@@ -6,12 +6,136 @@ namespace Composer\Autoload;
 
 class ComposerStaticInited1870727e337fc27a61bfb0865431ad
 {
+    public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+    );
+
+    public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Component\\Process\\' => 26,
+            'Symfony\\Component\\Finder\\' => 25,
+            'Symfony\\Component\\Filesystem\\' => 29,
+            'Symfony\\Component\\Debug\\' => 24,
+            'Symfony\\Component\\Console\\' => 26,
+            'Seld\\PharUtils\\' => 15,
+            'Seld\\JsonLint\\' => 14,
+            'Seld\\CliPrompt\\' => 15,
+        ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+            'Pheanstalk\\' => 11,
+        ),
+        'J' => 
+        array (
+            'JsonSchema\\' => 11,
+        ),
+        'C' => 
+        array (
+            'Composer\\Spdx\\' => 14,
+            'Composer\\Semver\\' => 16,
+            'Composer\\CaBundle\\' => 18,
+            'Composer\\' => 9,
+        ),
+        'A' => 
+        array (
+            'Anomaly\\InstallerModule\\' => 24,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Component\\Process\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/process',
+        ),
+        'Symfony\\Component\\Finder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/finder',
+        ),
+        'Symfony\\Component\\Filesystem\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/filesystem',
+        ),
+        'Symfony\\Component\\Debug\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/debug',
+        ),
+        'Symfony\\Component\\Console\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Seld\\PharUtils\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/seld/phar-utils/src',
+        ),
+        'Seld\\JsonLint\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/seld/jsonlint/src/Seld/JsonLint',
+        ),
+        'Seld\\CliPrompt\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/seld/cli-prompt/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Pheanstalk\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pda/pheanstalk/src',
+        ),
+        'JsonSchema\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
+        ),
+        'Composer\\Spdx\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/spdx-licenses/src',
+        ),
+        'Composer\\Semver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/semver/src',
+        ),
+        'Composer\\CaBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
+        ),
+        'Composer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/composer/src/Composer',
+        ),
+        'Anomaly\\InstallerModule\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/anomaly/installer-module/src',
+        ),
+    );
+
     public static $prefixesPsr0 = array (
+        'Z' => 
+        array (
+            'ZPHP\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/zphp/zphp',
+            ),
+        ),
         'P' => 
         array (
             'Pimple' => 
             array (
                 0 => __DIR__ . '/..' . '/pimple/pimple/src',
+            ),
+        ),
+        'M' => 
+        array (
+            'Mustache' => 
+            array (
+                0 => __DIR__ . '/..' . '/mustache/mustache/src',
             ),
         ),
     );
@@ -30,6 +154,8 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInited1870727e337fc27a61bfb0865431ad::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInited1870727e337fc27a61bfb0865431ad::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInited1870727e337fc27a61bfb0865431ad::$prefixesPsr0;
             $loader->classMap = ComposerStaticInited1870727e337fc27a61bfb0865431ad::$classMap;
 
