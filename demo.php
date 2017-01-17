@@ -12,6 +12,10 @@ $job = $pheanstalk->watch('testtube')->ignore('default')->reserve();
 
 echo $job->getData();
 
+$pheanstalk->delete($job);
+
+$pheanstalk->getConnection()->isServiceListening();
+
 exit;
 class A
 {
