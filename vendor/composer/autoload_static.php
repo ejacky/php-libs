@@ -32,6 +32,10 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         array (
             'JsonSchema\\' => 11,
         ),
+        'H' => 
+        array (
+            'Hisune\\EchartsPHP\\' => 18,
+        ),
         'C' => 
         array (
             'Composer\\Spdx\\' => 14,
@@ -93,6 +97,10 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         'JsonSchema\\' => 
         array (
             0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
+        ),
+        'Hisune\\EchartsPHP\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hisune/echarts-php/src',
         ),
         'Composer\\Spdx\\' => 
         array (
