@@ -2,6 +2,15 @@
 //date_default_timezone_set('Asia/Shanghai');
 error_reporting(-1);
 
+ob_start();
+include "example.php";
+
+$out = ob_get_clean();
+$out = strtolower($out);
+
+var_dump($out);
+
+exit;
 //Enter your code here, enjoy!
 
 $arr3 = [];

@@ -1,4 +1,7 @@
 <?php
+
+include "test.php";
+exit;
 class BB {
     private $name;
 

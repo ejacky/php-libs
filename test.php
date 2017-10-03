@@ -1,10 +1,15 @@
+<html>
+<body>
+<p>what are you doing?</p>
+</body>
+</html>
 <?php
-
+exit;
 require_once 'vendor/autoload.php';
 
-ORM::configure('mysql:host=192.168.1.233;dbname=test');
+ORM::configure('mysql:host=localhost;dbname=test');
 ORM::configure('username', 'root');
-ORM::configure('password', '90()IOpl');
+ORM::configure('password', '');
 
 $db = ORM::get_db();
 
@@ -55,8 +60,8 @@ class Contact extends Model
 
 }
 
-$test = Model::factory('Contact')->find_one(1)->as_array();
-var_dump($test);
+//$test = Model::factory('Contact')->find_one(1)->as_array();
+//var_dump($test);
 ?>
 
 
