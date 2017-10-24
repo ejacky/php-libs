@@ -14,4 +14,9 @@ return array(
     'ORM' => $vendorDir . '/j4mie/idiorm/idiorm.php',
     'ORMWrapper' => $vendorDir . '/j4mie/paris/paris.php',
     'ParisMethodMissingException' => $vendorDir . '/j4mie/paris/paris.php',
+    'Smarty' => $vendorDir . '/smarty/smarty/libs/Smarty.class.php',
+    'SmartyBC' => $vendorDir . '/smarty/smarty/libs/SmartyBC.class.php',
+    'SmartyCompilerException' => $vendorDir . '/smarty/smarty/libs/Smarty.class.php',
+    'SmartyException' => $vendorDir . '/smarty/smarty/libs/Smarty.class.php',
+    'Smarty_Security' => $vendorDir . '/smarty/smarty/libs/sysplugins/smarty_security.php',
 );

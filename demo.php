@@ -2,6 +2,13 @@
 //date_default_timezone_set('Asia/Shanghai');
 error_reporting(-1);
 
+$bind_vals = [
+    ':name' => 'test',
+    ':detail' => 'this is detail'
+];
+var_dump(implode(',', array_keys($bind_vals)));
+exit;
+
 ob_start();
 include "example.php";
 

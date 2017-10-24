@@ -157,6 +157,11 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         'ORM' => __DIR__ . '/..' . '/j4mie/idiorm/idiorm.php',
         'ORMWrapper' => __DIR__ . '/..' . '/j4mie/paris/paris.php',
         'ParisMethodMissingException' => __DIR__ . '/..' . '/j4mie/paris/paris.php',
+        'Smarty' => __DIR__ . '/..' . '/smarty/smarty/libs/Smarty.class.php',
+        'SmartyBC' => __DIR__ . '/..' . '/smarty/smarty/libs/SmartyBC.class.php',
+        'SmartyCompilerException' => __DIR__ . '/..' . '/smarty/smarty/libs/Smarty.class.php',
+        'SmartyException' => __DIR__ . '/..' . '/smarty/smarty/libs/Smarty.class.php',
+        'Smarty_Security' => __DIR__ . '/..' . '/smarty/smarty/libs/sysplugins/smarty_security.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
