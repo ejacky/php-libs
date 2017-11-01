@@ -1,6 +1,286 @@
 <?php
 //date_default_timezone_set('Asia/Shanghai');
+
+//$test['for_test']['order'] = 100;
+//var_dump($test);
+//
+//exit;
+
+/**
+ * 1 default value
+ * 2  digui order
+ */
+
+
+$a = array(
+    'for_test' => array(
+        'name' => '测试',
+        'items' => array('name' => 'ce', 'order' => 0)
+    ),
+
+    'home_page' => array(
+        'order' => 30,
+        'name' => '首页',
+        'items' => array(
+            'index' => array('name' => '首页', 'order' => 10),
+        )
+    ),
+    'client_mgr' => array(
+        'order' => 40,
+        'name'  => '终端管理',
+        'items' => array(
+            'cli_summary' => array('order' => 30, 'name' => '终端概况'),
+            'virus_sec'  => array('order' => 20, 'name' => '病毒查杀'),
+            'leak_mgr'   => array('order' => 10, 'name' => '漏洞管理', 'sub_items' => array('leak_mgr_cli' => array('name' => '按终端显示', 'order' => 20, 'action' => 'byterminal'), 'leak_mgr_cli_item' => array('name' => '按漏洞显示', 'order' => 10, 'action' => 'byitem')))
+        )
+    ),
+    'device_mgr' => array(
+        'order' => 20,
+        'name' => '设备管理',
+        'items' => array(
+            'usb_mgr' => array('order' => 10, 'name' => '移动存储')
+        )
+    ),
+
+
+);
+
+//$order_array =  usort($a, function ($a, $b) {
+//    return $a['order'] - $b['order'];
+//});
+
+//uasort($a, function ($a, $b) {
+//    return $a['order'] - $b['order'];
+//});
+//
+//var_dump(json_encode($a));
+//
+//foreach ($a as &$item) {
+//    if (isset($item['items'])) {
+//        uasort($item, function ($a, $b) {
+//            return $a['order'] - $b['order'];
+//        });
+//    }
+//}
+//
+//var_dump(json_encode($a));
+
+//exit;
+//
+//function array_ex_sort(&$r_array)
+//{
+//    // 给第一级排序
+//    uasort($r_array, function ($a, $b) {
+//        return $a['order'] - $b['order'];
+//    });
+//
+//    // 排序第二级
+//    foreach ($r_array as &$item) {
+//        if (isset($item['items'])) {
+//            uasort($item['items'], function ($a, $b) {
+//                return $a['order'] - $b['order'];
+//            });
+//        }
+//
+//        // 排序第三级
+//        foreach ($item as &$sub_item) {
+//            if (isset($sub_item['sub_items'])) {
+//                uasort($sub_item['sub_items'], function ($a, $b) {
+//                    return $a['order'] - $b['order'];
+//                });
+//            }
+//
+//        }
+//    }
+//}
+//array_ex_sort($a);
+function array_ex_sort_2(&$r_array, $sort_field = 'order')
+{
+    uasort($r_array, function ($a, $b) use($sort_field) {
+
+        return $a[$sort_field] - $b[$sort_field];
+    });
+    foreach ($r_array as &$item) {
+        if (is_array($item) ) {
+            array_ex_sort_2($item);
+        }
+    }
+}
+array_ex_sort_2($a);
+var_dump(json_encode($a));
+
+//$t = array('t' => array('order' => 5));
+
+//usort($t, function($a, $b) {
+//    return $a['order'] - $b['order'];
+//});
+//var_dump($t);exit;
+//array_ex_sort($a);
+//var_dump($a);
+
+//function array_ex_sort(&$r_array)
+//{
+//    foreach ($r_array as  &$item) {
+//        if (!isset($item['order'])) {
+//            //echo "true";
+//            //var_dump($item);
+//            $item['order'] = 1000;
+//        }
+//
+//        foreach ($item as &$sub_item) {
+//            if (!isset($sub_item['order'])) {
+//                //echo "true";
+//                //var_dump($sub_item);
+//                $sub_item['order'] = 1000;
+//            }
+//
+//        }
+//        unset($sub_item);
+//        usort($item, array("TestObj", "cmp_obj"));
+//
+//
+//    }
+//    unset($item);
+//    usort($r_array, array("TestObj", "cmp_obj"));
+//}
+
+
+exit;
+$a = array(
+    'z' => array(
+        'n' => 'xx',
+        'order' => 20,
+        'i' => array(
+            'n' => 'ww',
+            'order' => 50,
+            'ii' => array('n' => 'dd', 'order' => 80)
+        )
+    ),
+    'w' => array(
+        'n' => 'yy',
+        'order' => 10,
+        'i' => array(
+            'n' => 'xx',
+            'order' => 50,
+            'ii' => array('n' => 'ee', 'order' => 70)
+        )
+    ),
+    'l' => array()
+);
+
+
+exit;
+if (intval(" ")) {
+    echo "yes";
+
+} else {
+    echo "falut";
+}
+exit;
 error_reporting(-1);
+$value = array(
+    'id' => 1023,
+    'name' => 'openports_check',
+    'white_ports' => "60, 25, 70- 65",
+    'black_ports' => "20 ,  50, 2 -9,  40 - 30"
+    );
+foreach ($value as $k => &$v) {
+    if (1023 == $value['id']) {
+        if ('white_ports' == $k or 'black_ports' == $k) {
+            foreach ($v_array = explode(',', $v) as $kk => &$vv) {
+                if (strpos($vv, '-') !== false) {
+                    $vv_array = array_map('trim', explode('-', $vv));
+                    asort($vv_array);
+                    $vv = implode('-', $vv_array);
+                } else {
+                    $vv = trim($vv);
+                }
+            }
+            unset($vv);
+            $v = implode(',',$v_array);
+        }
+    }
+}
+print_r($value);
+exit;
+//backup
+if ("1023" == $value["id"]) {
+    if ('white_ports' == $k  or 'black_ports' == $k) {
+        foreach ($v_array = explode(',', $v) as $kk => &$vv) {
+            if (strpos($vv, '-') !== false) {
+                $vv_array = array_map('trim', explode('-', $vv));
+                asort($vv_array);
+                $vv = implode('-', $vv_array);
+            } else {
+                $vv = trim($vv);
+            }
+        }
+        unset($vv);
+        $v = implode(',',$v_array);
+    }
+}
+
+exit;
+foreach ($v as $kk => &$vv) {
+    if (strpos($vv, '-') !== false) {
+        $vv_array = explode('-', $vv);
+        $vv_array = array_map('trim', $vv_array);
+            asort($vv_array);
+        $vv = implode('-', $vv_array);
+    } else {
+        $vv = trim($vv);
+    }
+}
+unset($vv);
+
+print_r($v);
+exit;
+
+$black_ports = array("20 ", " 50", "2 -9", " 40 - 30");
+//asort($black_ports);
+print_r($black_ports);
+foreach ($black_ports as $key => &$value) {
+    // 排序端口段
+    if (strpos($value, '-') !== false) {
+        $value_array = explode('-', $value);
+
+        $value_array = array_map('trim', $value_array);
+        print_r(asort($value_array));
+        $value = implode('-', $value_array);
+    } else {
+        $value = trim($value);
+    }
+
+}
+unset($value);
+print_r($black_ports);
+exit;
+
+if (extension_loaded('pgsql')) {
+    echo "exist;";
+} else {
+    echo "donot exist";
+}
+
+
+exit;
+static $finder = null;
+
+$finder = 'haa';
+
+static $finder = null;
+
+var_dump($finder);
+exit;
+$dbname = 'skylar';
+$host = '127.0.0.1';
+$port = '5360';
+$dbuser = 'postgres';
+$dbpass = 'postgres';
+$dbh = new PDO("pgsql:dbname=$dbname;host=$host;port=$port", $dbuser, $dbpass);
+var_dump($dbh);
+exit;
+
 
 $bind_vals = [
     ':name' => 'test',
