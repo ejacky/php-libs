@@ -11,9 +11,24 @@
  * 2  digui order
  */
 
+$xx = array(
+    array(
+        'name' => 'xx',
+        'item' => array('order' => 20, 'name' => 'nn')
+    ),
+    array(
+        'name' => 'zz',
+        'item' => array()
+    ),
+    array()
+);
+
+
+exit;
 
 $a = array(
     'for_test' => array(
+        'order' => 100,
         'name' => '测试',
         'items' => array('name' => 'ce', 'order' => 0)
     ),
@@ -65,24 +80,29 @@ $a = array(
 //
 //var_dump(json_encode($a));
 
-//exit;
-//
-//function array_ex_sort(&$r_array)
-//{
-//    // 给第一级排序
-//    uasort($r_array, function ($a, $b) {
-//        return $a['order'] - $b['order'];
-//    });
-//
-//    // 排序第二级
-//    foreach ($r_array as &$item) {
-//        if (isset($item['items'])) {
+/**
+ * @param 方案二 begin
+ * 第三级报错
+ */
+function array_ex_sort(&$r_array)
+{
+    // 给第一级排序
+    uasort($r_array, function ($a, $b) {
+        return $a['order'] - $b['order'];
+    });
+
+    // 排序第二级
+
+    //var_dump($r_array);
+
+    foreach ($r_array as  &$item) {
+            var_dump($item['items']);
 //            uasort($item['items'], function ($a, $b) {
 //                return $a['order'] - $b['order'];
 //            });
-//        }
-//
-//        // 排序第三级
+
+
+        // 排序第三级
 //        foreach ($item as &$sub_item) {
 //            if (isset($sub_item['sub_items'])) {
 //                uasort($sub_item['sub_items'], function ($a, $b) {
@@ -91,23 +111,43 @@ $a = array(
 //            }
 //
 //        }
-//    }
-//}
-//array_ex_sort($a);
-function array_ex_sort_2(&$r_array, $sort_field = 'order')
-{
-    uasort($r_array, function ($a, $b) use($sort_field) {
-
-        return $a[$sort_field] - $b[$sort_field];
-    });
-    foreach ($r_array as &$item) {
-        if (is_array($item) ) {
-            array_ex_sort_2($item);
-        }
     }
 }
-array_ex_sort_2($a);
-var_dump(json_encode($a));
+array_ex_sort($a);exit;
+//var_dump(json_encode($a));
+/**
+ * 方案二 end
+ */
+
+
+
+/**
+ *  方案一 begin
+ */
+//function array_ex_sort_2(&$r_array, $sort_field = 'order')
+//{
+//    uasort($r_array, function ($a, $b) use($sort_field) {
+//        if (!isset($a[$sort_field])) {
+//            $a[$sort_field] = 100;
+//        }
+//        if (!isset($b[$sort_field])) {
+//            $b[$sort_field] = 100;
+//        }
+//
+//        return $a[$sort_field] - $b[$sort_field];
+//    });
+//    foreach ($r_array as &$item) {
+//        if (is_array($item) ) {
+//            array_ex_sort_2($item);
+//        }
+//    }
+//}
+//array_ex_sort_2($a);
+//var_dump(json_encode($a));
+
+/**
+ * 方案一 end
+ */
 
 //$t = array('t' => array('order' => 5));
 
