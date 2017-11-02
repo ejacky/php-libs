@@ -11,42 +11,37 @@
  * 2  digui order
  */
 
-$xx = array(
-    array(
-        'name' => 'xx',
-        'item' => array('order' => 20, 'name' => 'nn')
-    ),
-    array(
-        'name' => 'zz',
-        'item' => array()
-    ),
-    array()
-);
+//$xx = array(
+//    array(
+//        'name' => 'xx',
+//        'item' => array('order' => 20, 'name' => 'nn')
+//    ),
+//    array(
+//        'name' => 'zz',
+//        'item' => array()
+//    ),
+//    array()
+//);
 
 
-exit;
+//exit;
 
-$a = array(
-    'for_test' => array(
-        'order' => 100,
-        'name' => '测试',
-        'items' => array('name' => 'ce', 'order' => 0)
-    ),
+$nav_m = array(
 
     'home_page' => array(
-        'order' => 30,
+        //'order' => 30,
         'name' => '首页',
         'items' => array(
             'index' => array('name' => '首页', 'order' => 10),
         )
     ),
     'client_mgr' => array(
-        'order' => 40,
+        //'order' => 40,
         'name'  => '终端管理',
         'items' => array(
             'cli_summary' => array('order' => 30, 'name' => '终端概况'),
-            'virus_sec'  => array('order' => 20, 'name' => '病毒查杀'),
-            'leak_mgr'   => array('order' => 10, 'name' => '漏洞管理', 'sub_items' => array('leak_mgr_cli' => array('name' => '按终端显示', 'order' => 20, 'action' => 'byterminal'), 'leak_mgr_cli_item' => array('name' => '按漏洞显示', 'order' => 10, 'action' => 'byitem')))
+            'virus_sec'  => array('name' => '病毒查杀'),
+            'leak_mgr'   => array('order' => 10, 'name' => '漏洞管理', 'sub_items' => array('leak_mgr_cli' => array('name' => '按终端显示', 'action' => 'byterminal'), 'leak_mgr_cli_item' => array('name' => '按漏洞显示', 'order' => 10, 'action' => 'byitem')))
         )
     ),
     'device_mgr' => array(
@@ -56,10 +51,81 @@ $a = array(
             'usb_mgr' => array('order' => 10, 'name' => '移动存储')
         )
     ),
-
-
 );
 
+$nav_e = array(
+    'for_test' => array(
+        'order' => 100,
+        'name' => '测试',
+        'items' => array('name' => 'ce', 'order' => 0)
+    )
+);
+
+//$max_order = array_reduce($nav_m, function ($a, $b) {
+//    if (!isset($a['order'])) {$order_a = 0;} else {$order_a = $a['order'];}
+//    if (!isset($b['order'])) {$order_b = 0;} else {$order_b = $b['order'];}
+//    return $order_a > $order_b ? $order_a: $order_b;
+//});
+
+//var_dump(@max(array_column($nav_m, 'order')));exit;
+
+function array_recursive_addOrder(array & $r_array, $item_ids, $sort_field = 'order')
+{
+    $temp_order = @max(array_column($r_array, $sort_field));
+    if ($temp_order === false) {$temp_order = 0;}
+    foreach ($r_array as &$item) {
+        if (!isset($item[$sort_field])) {
+            $temp_order += 10;
+            $item[$sort_field] = $temp_order;
+        }
+        $all_keys = array_keys($item);
+        $item_id = array_intersect($all_keys, $item_ids);
+        if (count($item_id) == 1 && is_array($item[current($item_id)])) {
+            array_recursive_addOrder($item[current($item_id)], $item_ids);
+        }
+    }
+}
+
+array_recursive_addOrder($nav_m, array('items', 'sub_items'));
+var_dump($nav_m);
+exit;
+
+
+function array_merge_recursive_ex(array & $array1, array & $array2, $generate_key = true)
+{
+    $merged = $array1;
+
+    foreach ($array2 as $key => & $value)
+    {
+        if (is_array($value) && isset($merged[$key]) && is_array($merged[$key]))
+        {
+            //问题场景：$merged[$key]={1,2,3,4}, $value={1,2} 返回{1,2,3,4},只增不减，修复如下, 欢迎更好方案：
+            //$merged[$key]为list格式数组{1,2,a,b,c}，则$value直接覆盖
+            //$merged[$key]为key-val字典格式{'a'=>'1'}，则继续递归
+            $keys = array_keys($merged[$key]);
+            if($keys === array_keys($keys))
+            {
+                $merged[$key] = $value;
+            }else{
+                $merged[$key] = array_merge_recursive_ex($merged[$key], $value);
+            }
+        } else if (is_numeric($key) && $generate_key)
+        {
+            if (!in_array($value, $merged))
+                $merged[] = $value;
+        } else
+            $merged[$key] = $value;
+    }
+
+    return $merged;
+}
+
+$nav = array_merge_recursive_ex($nav_m, $nav_e);
+
+var_dump($nav);
+
+
+exit;
 //$order_array =  usort($a, function ($a, $b) {
 //    return $a['order'] - $b['order'];
 //});
