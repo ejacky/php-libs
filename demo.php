@@ -53,6 +53,12 @@ $nav_m = array(
     ),
 );
 
+//$nav_m = array('a' => '2', 'b' => '3', 'c' => '4');
+//$keys = array_keys($nav_m);
+//var_dump($keys);
+//var_dump(array_keys($keys));
+//exit;
+
 $nav_e = array(
     'for_test' => array(
         'order' => 100,
@@ -87,8 +93,30 @@ function array_recursive_addOrder(array & $r_array, $item_ids, $sort_field = 'or
 }
 
 array_recursive_addOrder($nav_m, array('items', 'sub_items'));
-var_dump($nav_m);
-exit;
+//var_dump($nav_m);
+//exit;
+
+$a = array(
+    1, 2, 3, 4,
+);
+$b = array(
+    1, 2
+);
+
+$a1 = array(
+    array(1, 2, 'a', 'b'),
+);
+$b1 = array(
+    array(1, 2)
+);
+
+$a2 = array(
+    'home' => array(1, 2, 'a', 'b'),
+);
+$b2 = array(
+    array(1, 2)
+);
+
 
 
 function array_merge_recursive_ex(array & $array1, array & $array2, $generate_key = true)
@@ -120,9 +148,10 @@ function array_merge_recursive_ex(array & $array1, array & $array2, $generate_ke
     return $merged;
 }
 
-$nav = array_merge_recursive_ex($nav_m, $nav_e);
-
-var_dump($nav);
+$t = array_merge_recursive_ex($a, $b);
+$t1 = array_merge_recursive_ex($a1, $b1);
+$t2 = array_merge_recursive_ex($a2, $b2);
+var_dump($t);
 
 
 exit;
