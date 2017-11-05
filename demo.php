@@ -1,4 +1,14 @@
 <?php
+include "vendor/autoload.php";
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\FirePHPHandler;
+
+// Create the logger
+$logger = new Logger('my_logger');
+// Now add some handlers
+$logger->pushHandler(new StreamHandler(__DIR__.'/demo.log', Logger::DEBUG));
+$logger->pushHandler(new FirePHPHandler());
 //date_default_timezone_set('Asia/Shanghai');
 
 //$test['for_test']['order'] = 100;
@@ -26,7 +36,7 @@
 
 //exit;
 
-$nav_m = array(
+$nav_m = array('navigates' =>array(
 
     'home_page' => array(
         //'order' => 30,
@@ -51,7 +61,7 @@ $nav_m = array(
             'usb_mgr' => array('order' => 10, 'name' => '移动存储')
         )
     ),
-);
+));
 
 //$nav_m = array('a' => '2', 'b' => '3', 'c' => '4');
 //$keys = array_keys($nav_m);
@@ -63,7 +73,9 @@ $nav_e = array(
     'for_test' => array(
         'order' => 100,
         'name' => '测试',
-        'items' => array('name' => 'ce', 'order' => 0)
+        'items' => array(
+            array('name' => 'ce', 'order' => 0)
+        )
     )
 );
 
@@ -75,10 +87,24 @@ $nav_e = array(
 
 //var_dump(@max(array_column($nav_m, 'order')));exit;
 
-function array_recursive_addOrder(array & $r_array, $item_ids, $sort_field = 'order')
+function array_merge_add_order(array & $array1, array & $array2, $item_ids, $sort_field = 'order')
 {
-    $temp_order = @max(array_column($r_array, $sort_field));
-    if ($temp_order === false) {$temp_order = 0;}
+    array_recursive_add_order($array1, $item_ids, $sort_field);
+    $start_order = @max(array_column($array1, $sort_field));
+    if ($start_order === false) {$start_order = 0;}
+    array_recursive_add_order($array2, $item_ids, $sort_field, $start_order);
+
+    return array_merge($array1, $array2);
+}
+
+function array_recursive_add_order(array & $r_array, $item_ids, $sort_field = 'order', $start_order = 0)
+{
+    if ($start_order == 0) {
+        $temp_order = @max(array_column($r_array, $sort_field));
+        if ($temp_order === false) {$temp_order = 0;}
+    } else
+        $temp_order = $start_order;
+
     foreach ($r_array as &$item) {
         if (!isset($item[$sort_field])) {
             $temp_order += 10;
@@ -87,13 +113,13 @@ function array_recursive_addOrder(array & $r_array, $item_ids, $sort_field = 'or
         $all_keys = array_keys($item);
         $item_id = array_intersect($all_keys, $item_ids);
         if (count($item_id) == 1 && is_array($item[current($item_id)])) {
-            array_recursive_addOrder($item[current($item_id)], $item_ids);
+            array_recursive_add_order($item[current($item_id)], $item_ids);
         }
     }
 }
 
-array_recursive_addOrder($nav_m, array('items', 'sub_items'));
-//var_dump($nav_m);
+//$merged = array_merge_add_order($nav_m, $nav_e, array('items', 'sub_items'));
+//var_dump(json_encode($merged));
 //exit;
 
 $a = array(
@@ -117,10 +143,90 @@ $b2 = array(
     array(1, 2)
 );
 
+$a3 = array(
+    'home' => array(1,2 ,'a', 'b')
+);
+$b3 = array(
+    'test' => array(1, 2),
+);
+
+$a4 = array(
+    'home' => array(
+        'name' => '首页',
+        'items' => array(
+            'index' => array('name' => '首页', 'order' => 10),
+            'index_1' => array('xx' => 'yy'),
+        ),
+        'order' => 50,
+    )
+);
+$b4 = array(
+    'test' => array(
+        'name' => '测试',
+        'items' => array(
+            'index' => array('name' => 'ce')
+        )
+    )
+);
+
+$a5 = array(
+    'client_mgr' => array(
+        //'order' => 40,
+        'name'  => '终端管理',
+        'items' => array(
+            'cli_summary' => array('order' => 30, 'name' => '终端概况'),
+            'virus_sec'  => array('name' => '病毒查杀'),
+            'leak_mgr'   => array('order' => 10, 'name' => '漏洞管理', 'sub_items' => array('leak_mgr_cli' => array('name' => '按终端显示', 'action' => 'byterminal'), 'leak_mgr_cli_item' => array('name' => '按漏洞显示', 'order' => 10, 'action' => 'byitem')))
+        )
+    )
+);
+$b5 = array(
+    'client_mgr' => array(
+        'items' => array(
+            'index' => array('name' => 'ce')
+        )
+    )
+);
 
 
-function array_merge_recursive_ex(array & $array1, array & $array2, $generate_key = true)
+function array_merge_recursive_distinct ( array &$array1, array &$array2 )
 {
+    $merged = $array1;
+
+    foreach ( $array2 as $key => &$value )
+    {
+        if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) )
+        {
+            $merged [$key] = array_merge_recursive_distinct ( $merged [$key], $value );
+        }
+        else
+        {
+            $merged [$key] = $value;
+        }
+    }
+
+    return $merged;
+}
+
+function array_merge_add_order_t(array & $array1, array & $array2, $item_ids = array('items', 'sub_items'), $sort_field = 'order')
+{
+    // 两种情况
+    // 1 直接 merge
+    // 2 在 原里面有 该 key
+
+//    array_recursive_add_order($array1, $item_ids, $sort_field);
+//    $start_order = @max(array_column($array1, $sort_field));
+//    if ($start_order === false) {$start_order = 0;}
+//    array_recursive_add_order($array2, $item_ids, $sort_field, $start_order);
+
+    return array_merge($array1, $array2);
+
+
+}
+
+function array_merge_recursive_ex_t(array & $array1, array & $array2, $generate_key = true, $items_id = array('items', 'sub_items'), $sort_field= 'order')
+{
+    //array_recursive_add_order($array1, $items_id);
     $merged = $array1;
 
     foreach ($array2 as $key => & $value)
@@ -133,25 +239,46 @@ function array_merge_recursive_ex(array & $array1, array & $array2, $generate_ke
             $keys = array_keys($merged[$key]);
             if($keys === array_keys($keys))
             {
+                //$merged[$key] = $value;
+                //$w_merge = array($key => $value);
+                //array_recursive_add_order($w_merge, $items_id);
                 $merged[$key] = $value;
             }else{
-                $merged[$key] = array_merge_recursive_ex($merged[$key], $value);
+                $merged[$key] = array_merge_recursive_ex_t($merged[$key], $value);
             }
         } else if (is_numeric($key) && $generate_key)
         {
             if (!in_array($value, $merged))
                 $merged[] = $value;
-        } else
+        } else {
+            //$w_merge = array($key => $value);
+            //array_recursive_add_order($w_merge, $items_id);
+            $t_m[''] = array($merged);
+            array_recursive_add_order($t_m, $items_id);
             $merged[$key] = $value;
-    }
+        }
 
+    }
+//    array_recursive_add_order($w_merge, $items_id);
     return $merged;
 }
 
-$t = array_merge_recursive_ex($a, $b);
-$t1 = array_merge_recursive_ex($a1, $b1);
-$t2 = array_merge_recursive_ex($a2, $b2);
-var_dump($t);
+//$t = array_merge_recursive_ex($a, $b);
+//$t1 = array_merge_recursive_ex($a1, $b1);
+//$t2 = array_merge_recursive_ex($a2, $b2);
+//$t3 = array_merge_recursive_ex($a3, $b3);
+//$t4 = array_merge_recursive_ex($a4, $b4);
+//$t5 = array_merge_recursive_ex($a5, $b5);
+
+array_recursive_add_order($nav_m, array('navigates', 'items', 'sub_items'));
+$logger->info(json_encode($nav_m));
+exit;
+$merged = array_merge_recursive_ex_t($a5, $b5);
+var_dump(json_encode($merged));
+//var_dump(json_encode($b4));
+
+//$merged = array_merge_add_order($a4, $b4, array('items', 'sub_items'));
+//var_dump(json_encode($merged));
 
 
 exit;

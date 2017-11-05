@@ -34,7 +34,8 @@ class UpdateCommand extends BaseCommand
     {
         $this
             ->setName('update')
-            ->setDescription('Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file.')
+            ->setAliases(array('upgrade'))
+            ->setDescription('Upgrades your dependencies to the latest version according to composer.json, and updates the composer.lock file.')
             ->setDefinition(array(
                 new InputArgument('packages', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'Packages that should be updated, if not provided all packages are.'),
                 new InputOption('prefer-source', null, InputOption::VALUE_NONE, 'Forces installation from package sources when possible, including VCS information.'),
@@ -52,6 +53,7 @@ class UpdateCommand extends BaseCommand
                 new InputOption('verbose', 'v|vv|vvv', InputOption::VALUE_NONE, 'Shows more details including new commits pulled in when updating packages.'),
                 new InputOption('optimize-autoloader', 'o', InputOption::VALUE_NONE, 'Optimize autoloader during autoloader dump.'),
                 new InputOption('classmap-authoritative', 'a', InputOption::VALUE_NONE, 'Autoload classes from the classmap only. Implicitly enables `--optimize-autoloader`.'),
+                new InputOption('apcu-autoloader', null, InputOption::VALUE_NONE, 'Use APCu to cache found/not-found classes.'),
                 new InputOption('ignore-platform-reqs', null, InputOption::VALUE_NONE, 'Ignore platform requirements (php & ext- packages).'),
                 new InputOption('prefer-stable', null, InputOption::VALUE_NONE, 'Prefer stable versions of dependencies.'),
                 new InputOption('prefer-lowest', null, InputOption::VALUE_NONE, 'Prefer lowest versions of dependencies.'),
@@ -123,30 +125,12 @@ EOT
 
         $install = Installer::create($io, $composer);
 
-        $preferSource = false;
-        $preferDist = false;
-
         $config = $composer->getConfig();
-
-        switch ($config->get('preferred-install')) {
-            case 'source':
-                $preferSource = true;
-                break;
-            case 'dist':
-                $preferDist = true;
-                break;
-            case 'auto':
-            default:
-                // noop
-                break;
-        }
-        if ($input->getOption('prefer-source') || $input->getOption('prefer-dist')) {
-            $preferSource = $input->getOption('prefer-source');
-            $preferDist = $input->getOption('prefer-dist');
-        }
+        list($preferSource, $preferDist) = $this->getPreferredInstallOptions($config, $input);
 
         $optimize = $input->getOption('optimize-autoloader') || $config->get('optimize-autoloader');
         $authoritative = $input->getOption('classmap-authoritative') || $config->get('classmap-authoritative');
+        $apcu = $input->getOption('apcu-autoloader') || $config->get('apcu-autoloader');
 
         $install
             ->setDryRun($input->getOption('dry-run'))
@@ -159,6 +143,7 @@ EOT
             ->setSkipSuggest($input->getOption('no-suggest'))
             ->setOptimizeAutoloader($optimize)
             ->setClassMapAuthoritative($authoritative)
+            ->setApcuAutoloader($apcu)
             ->setUpdate(true)
             ->setUpdateWhitelist($input->getOption('lock') ? array('lock') : $packages)
             ->setWhitelistDependencies($input->getOption('with-dependencies'))

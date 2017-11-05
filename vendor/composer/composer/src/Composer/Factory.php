@@ -28,7 +28,9 @@ use Composer\Util\Silencer;
 use Composer\Plugin\PluginEvents;
 use Composer\EventDispatcher\Event;
 use Seld\JsonLint\DuplicateKeyException;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Composer\EventDispatcher\EventDispatcher;
 use Composer\Autoload\AutoloadGenerator;
 use Composer\Package\Version\VersionParser;
@@ -162,16 +164,19 @@ class Factory
             'data-dir' => self::getDataDir($home),
         )));
 
-        // Protect directory against web access. Since HOME could be
-        // the www-data's user home and be web-accessible it is a
-        // potential security risk
-        $dirs = array($config->get('home'), $config->get('cache-dir'), $config->get('data-dir'));
-        foreach ($dirs as $dir) {
-            if (!file_exists($dir . '/.htaccess')) {
-                if (!is_dir($dir)) {
-                    Silencer::call('mkdir', $dir, 0777, true);
+        $htaccessProtect = (bool) $config->get('htaccess-protect');
+        if ($htaccessProtect) {
+            // Protect directory against web access. Since HOME could be
+            // the www-data's user home and be web-accessible it is a
+            // potential security risk
+            $dirs = array($config->get('home'), $config->get('cache-dir'), $config->get('data-dir'));
+            foreach ($dirs as $dir) {
+                if (!file_exists($dir . '/.htaccess')) {
+                    if (!is_dir($dir)) {
+                        Silencer::call('mkdir', $dir, 0777, true);
+                    }
+                    Silencer::call('file_put_contents', $dir . '/.htaccess', 'Deny from all');
                 }
-                Silencer::call('file_put_contents', $dir . '/.htaccess', 'Deny from all');
             }
         }
 
@@ -223,6 +228,19 @@ class Factory
             'highlight' => new OutputFormatterStyle('red'),
             'warning' => new OutputFormatterStyle('black', 'yellow'),
         );
+    }
+
+    /**
+     * Creates a ConsoleOutput instance
+     *
+     * @return ConsoleOutput
+     */
+    public static function createOutput()
+    {
+        $styles = self::createAdditionalStyles();
+        $formatter = new OutputFormatter(null, $styles);
+
+        return new ConsoleOutput(ConsoleOutput::VERBOSITY_NORMAL, null, $formatter);
     }
 
     /**
@@ -329,7 +347,7 @@ class Factory
         // load package
         $parser = new VersionParser;
         $guesser = new VersionGuesser($config, new ProcessExecutor($io), $parser);
-        $loader  = new Package\Loader\RootPackageLoader($rm, $config, $parser, $guesser);
+        $loader = new Package\Loader\RootPackageLoader($rm, $config, $parser, $guesser);
         $package = $loader->load($localConfig, 'Composer\Package\RootPackage', $cwd);
         $composer->setPackage($package);
 
@@ -345,6 +363,10 @@ class Factory
             // initialize autoload generator
             $generator = new AutoloadGenerator($dispatcher, $io);
             $composer->setAutoloadGenerator($generator);
+
+            // initialize archive manager
+            $am = $this->createArchiveManager($config, $dm);
+            $composer->setArchiveManager($am);
         }
 
         // add installers to the manager (must happen after download manager is created since they read it out of $composer)

@@ -8,6 +8,7 @@
         "anomaly/installer-module": "~2.1.0",
         "pda/pheanstalk": "^3.1",
         "hisune/echarts-php": "^1.0",
-        "smarty/smarty": "3.1.16"
+        "smarty/smarty": "3.1.16",
+        "monolog/monolog": "~1.12"
     }
 }

@@ -18,8 +18,6 @@ use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Formatter\OutputFormatter;
 use Composer\Command;
 use Composer\Composer;
 use Composer\Factory;
@@ -96,9 +94,7 @@ class Application extends BaseApplication
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         if (null === $output) {
-            $styles = Factory::createAdditionalStyles();
-            $formatter = new OutputFormatter(null, $styles);
-            $output = new ConsoleOutput(ConsoleOutput::VERBOSITY_NORMAL, null, $formatter);
+            $output = Factory::createOutput();
         }
 
         return parent::run($input, $output);
@@ -127,6 +123,24 @@ class Application extends BaseApplication
             try {
                 $commandName = $this->find($name)->getName();
             } catch (\InvalidArgumentException $e) {
+            }
+        }
+
+        // prompt user for dir change if no composer.json is present in current dir
+        if ($io->isInteractive() && !$newWorkDir && !in_array($commandName, array('', 'list', 'init', 'about', 'help', 'diagnose', 'self-update', 'global', 'create-project'), true) && !file_exists(Factory::getComposerFile())) {
+            $dir = dirname(getcwd());
+            $home = realpath(getenv('HOME') ?: getenv('USERPROFILE') ?: '/');
+
+            // abort when we reach the home dir or top of the filesystem
+            while (dirname($dir) !== $dir && $dir !== $home) {
+                if (file_exists($dir.'/'.Factory::getComposerFile())) {
+                    if ($io->askConfirmation('<info>No composer.json in current directory, do you want to use the one at '.$dir.'?</info> [<comment>Y,n</comment>]? ', true)) {
+                        $oldWorkingDir = getcwd();
+                        chdir($dir);
+                    }
+                    break;
+                }
+                $dir = dirname($dir);
             }
         }
 
@@ -163,7 +177,7 @@ class Application extends BaseApplication
                 Composer::VERSION,
                 Composer::RELEASE_DATE,
                 defined('HHVM_VERSION') ? 'HHVM '.HHVM_VERSION : 'PHP '.PHP_VERSION,
-                php_uname('s') . ' / ' . php_uname('r')
+                function_exists('php_uname') ? php_uname('s') . ' / ' . php_uname('r') : 'Unknown OS'
             ), true, IOInterface::DEBUG);
 
             if (PHP_VERSION_ID < 50302) {

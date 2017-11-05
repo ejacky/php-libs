@@ -27,6 +27,8 @@ class GitDownloaderTest extends TestCase
 
     protected function setUp()
     {
+        $this->skipIfNotExecutable('git');
+
         $this->fs = new Filesystem;
         $this->workingDir = $this->getUniqueTmpDirectory();
     }
@@ -43,7 +45,8 @@ class GitDownloaderTest extends TestCase
         $refl->setValue(null, null);
     }
 
-    protected function setupConfig($config = null) {
+    protected function setupConfig($config = null)
+    {
         if (!$config) {
             $config = new Config();
         }
@@ -51,6 +54,7 @@ class GitDownloaderTest extends TestCase
             $tmpDir = realpath(sys_get_temp_dir()).DIRECTORY_SEPARATOR.'cmptest-'.md5(uniqid('', true));
             $config->merge(array('config' => array('home' => $tmpDir)));
         }
+
         return $config;
     }
 
@@ -98,8 +102,9 @@ class GitDownloaderTest extends TestCase
         $processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($this->winCompat('git --version')))
-            ->will($this->returnCallback(function($command, &$output = null) {
+            ->will($this->returnCallback(function ($command, &$output = null) {
                 $output = 'git version 1.0.0';
+
                 return 0;
             }));
 
@@ -148,8 +153,9 @@ class GitDownloaderTest extends TestCase
         $processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($this->winCompat('git --version')))
-            ->will($this->returnCallback(function($command, &$output = null) {
+            ->will($this->returnCallback(function ($command, &$output = null) {
                 $output = 'git version 2.3.1';
+
                 return 0;
             }));
 
@@ -213,8 +219,9 @@ class GitDownloaderTest extends TestCase
         $processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($this->winCompat('git --version')))
-            ->will($this->returnCallback(function($command, &$output = null) {
+            ->will($this->returnCallback(function ($command, &$output = null) {
                 $output = 'git version 1.0.0';
+
                 return 0;
             }));
 
@@ -296,8 +303,9 @@ class GitDownloaderTest extends TestCase
         $processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($this->winCompat('git --version')))
-            ->will($this->returnCallback(function($command, &$output = null) {
+            ->will($this->returnCallback(function ($command, &$output = null) {
                 $output = 'git version 1.0.0';
+
                 return 0;
             }));
 
@@ -341,8 +349,9 @@ class GitDownloaderTest extends TestCase
         $processExecutor->expects($this->at(0))
             ->method('execute')
             ->with($this->equalTo($this->winCompat('git --version')))
-            ->will($this->returnCallback(function($command, &$output = null) {
+            ->will($this->returnCallback(function ($command, &$output = null) {
                 $output = 'git version 1.0.0';
+
                 return 0;
             }));
         $processExecutor->expects($this->at(1))
@@ -371,7 +380,7 @@ class GitDownloaderTest extends TestCase
 
     public function testUpdate()
     {
-        $expectedGitUpdateCommand = $this->winCompat("git remote set-url composer 'https://github.com/composer/composer' && git fetch composer && git fetch --tags composer");
+        $expectedGitUpdateCommand = $this->winCompat("git remote set-url composer 'https://github.com/composer/composer' && git rev-parse --quiet --verify 'ref'^{commit} || (git fetch composer && git fetch --tags composer)");
 
         $packageMock = $this->getMock('Composer\Package\PackageInterface');
         $packageMock->expects($this->any())
@@ -420,7 +429,7 @@ class GitDownloaderTest extends TestCase
 
     public function testUpdateWithNewRepoUrl()
     {
-        $expectedGitUpdateCommand = $this->winCompat("git remote set-url composer 'https://github.com/composer/composer' && git fetch composer && git fetch --tags composer");
+        $expectedGitUpdateCommand = $this->winCompat("git remote set-url composer 'https://github.com/composer/composer' && git rev-parse --quiet --verify 'ref'^{commit} || (git fetch composer && git fetch --tags composer)");
 
         $packageMock = $this->getMock('Composer\Package\PackageInterface');
         $packageMock->expects($this->any())
@@ -453,6 +462,7 @@ origin https://github.com/old/url (push)
 composer https://github.com/old/url (fetch)
 composer https://github.com/old/url (push)
 ';
+
                 return 0;
             }));
         $processExecutor->expects($this->at(3))
@@ -491,7 +501,7 @@ composer https://github.com/old/url (push)
      */
     public function testUpdateThrowsRuntimeExceptionIfGitCommandFails()
     {
-        $expectedGitUpdateCommand = $this->winCompat("git remote set-url composer 'https://github.com/composer/composer' && git fetch composer && git fetch --tags composer");
+        $expectedGitUpdateCommand = $this->winCompat("git remote set-url composer 'https://github.com/composer/composer' && git rev-parse --quiet --verify 'ref'^{commit} || (git fetch composer && git fetch --tags composer)");
 
         $packageMock = $this->getMock('Composer\Package\PackageInterface');
         $packageMock->expects($this->any())
@@ -529,8 +539,8 @@ composer https://github.com/old/url (push)
 
     public function testUpdateDoesntThrowsRuntimeExceptionIfGitCommandFailsAtFirstButIsAbleToRecover()
     {
-        $expectedFirstGitUpdateCommand = $this->winCompat("git remote set-url composer '' && git fetch composer && git fetch --tags composer");
-        $expectedSecondGitUpdateCommand = $this->winCompat("git remote set-url composer 'https://github.com/composer/composer' && git fetch composer && git fetch --tags composer");
+        $expectedFirstGitUpdateCommand = $this->winCompat("git remote set-url composer '' && git rev-parse --quiet --verify 'ref'^{commit} || (git fetch composer && git fetch --tags composer)");
+        $expectedSecondGitUpdateCommand = $this->winCompat("git remote set-url composer 'https://github.com/composer/composer' && git rev-parse --quiet --verify 'ref'^{commit} || (git fetch composer && git fetch --tags composer)");
 
         $packageMock = $this->getMock('Composer\Package\PackageInterface');
         $packageMock->expects($this->any())

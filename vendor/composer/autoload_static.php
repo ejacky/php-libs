@@ -26,7 +26,12 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+            'Psr\\Container\\' => 14,
             'Pheanstalk\\' => 11,
+        ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
         ),
         'J' => 
         array (
@@ -90,9 +95,17 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
         'Pheanstalk\\' => 
         array (
             0 => __DIR__ . '/..' . '/pda/pheanstalk/src',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'JsonSchema\\' => 
         array (

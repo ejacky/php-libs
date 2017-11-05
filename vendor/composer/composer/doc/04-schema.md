@@ -29,12 +29,15 @@ The config of dependencies is ignored. This makes the `config` field
 ### name
 
 The name of the package. It consists of vendor name and project name,
-separated by `/`.
-
-Examples:
+separated by `/`. Examples:
 
 * monolog/monolog
 * igorw/event-source
+
+The name can contain any character, including white spaces, and it's case
+insensitive (`foo/bar` and `Foo/Bar` are considered the same package). In order
+to simplify its installation, it's recommended to define a short and lowercase
+name that doesn't include non-alphanumeric characters or white spaces.
 
 Required for published packages (libraries).
 
@@ -79,8 +82,8 @@ The type of the package. It defaults to `library`.
 
 Package types are used for custom installation logic. If you have a package
 that needs some special logic, you can define a custom type. This could be a
-`symfony-bundle`, a `wordpress-plugin` or a `typo3-module`. These types will
-all be specific to certain projects, and they will need to provide an
+`symfony-bundle`, a `wordpress-plugin` or a `typo3-cms-extension`. These types
+will all be specific to certain projects, and they will need to provide an
 installer capable of installing packages of that type.
 
 Out of the box, Composer supports four types:
@@ -143,13 +146,9 @@ The recommended notation for the most common licenses is (alphabetical):
 - BSD-3-Clause
 - BSD-4-Clause
 - GPL-2.0
-- GPL-2.0+
 - GPL-3.0
-- GPL-3.0+
 - LGPL-2.1
-- LGPL-2.1+
 - LGPL-3.0
-- LGPL-3.0+
 - MIT
 
 Optional, but it is highly recommended to supply this. More identifiers are
@@ -255,7 +254,8 @@ Optional.
 ### Package links
 
 All of the following take an object which maps package names to
-[version constraints](01-basic-usage.md#package-versions).
+versions of the package via version constraints. Read more about
+versions [here](articles/versions.md).
 
 Example:
 
@@ -291,6 +291,10 @@ explicitly require it as well, along with its sufficient stability flag.
 
 Example:
 
+Assuming `doctrine/doctrine-fixtures-bundle` requires `"doctrine/data-fixtures": "dev-master"`
+then inside the root composer.json you need to add the second line below to allow dev
+releases for the `doctrine/data-fixtures` package :
+
 ```json
 {
     "require": {
@@ -316,12 +320,12 @@ Example:
 }
 ```
 
-> **Note:** While this is convenient at times, it should not be how you use
-> packages in the long term because it comes with a technical limitation. The
+> **Note:** This feature has severe technical limitations, as the
 > composer.json metadata will still be read from the branch name you specify
-> before the hash. Because of that in some cases it will not be a practical
-> workaround, and you should always try to switch to tagged releases as soon
-> as you can.
+> before the hash. You should therefore only use this as a temporary solution
+> during development to remediate transient issues, until you can switch to
+> tagged releases. The Composer team does not actively support this feature
+> and will not accept bug reports related to it.
 
 It is also possible to inline-alias a package constraint so that it matches
 a constraint that it otherwise would not. For more information [see the
@@ -340,6 +344,18 @@ Example:
     }
 }
 ```
+
+> **Note:** It is important to list PHP extensions your project requires.
+> Not all PHP installations are created equal: some may miss extensions you
+> may consider as standard (such as `ext-mysqli` which is not installed by
+> default in Fedora/CentOS minimal installation systems). Failure to list
+> required PHP extensions may lead to a bad user experience: Composer will
+> install your package without any errors but it will then fail at run-time.
+> The `composer show --platform` command lists all PHP extensions available on
+> your system. You may use it to help you compile the list of extensions you
+> use and require. Alternatively you may use third party tools to analyze
+> your project for the list of extensions used.
+
 
 #### require
 
@@ -403,7 +419,8 @@ Example:
 ```json
 {
     "suggest": {
-        "monolog/monolog": "Allows more advanced logging of the application flow"
+        "monolog/monolog": "Allows more advanced logging of the application flow",
+        "ext-xml": "Needed to support XML format in class Foo"
     }
 }
 ```
@@ -412,10 +429,11 @@ Example:
 
 Autoload mapping for a PHP autoloader.
 
-Currently [`PSR-0`](http://www.php-fig.org/psr/psr-0/) autoloading,
-[`PSR-4`](http://www.php-fig.org/psr/psr-4/) autoloading, `classmap` generation and
-`files` includes are supported. PSR-4 is the recommended way though since it offers
-greater ease of use (no need to regenerate the autoloader when you add classes).
+[`PSR-4`](http://www.php-fig.org/psr/psr-4/) and [`PSR-0`](http://www.php-fig.org/psr/psr-0/)
+autoloading, `classmap` generation and `files` includes are supported.
+
+PSR-4 is the recommended way since it offers greater ease of use (no need
+to regenerate the autoloader when you add classes).
 
 #### PSR-4
 
@@ -586,6 +604,13 @@ Example:
 }
 ```
 
+#### Optimizing the autoloader
+
+The autoloader can have quite a substantial impact on your request time
+(50-100ms per request in large frameworks using a lot of classes). See the
+[`article about optimizing the autoloader`](articles/autoloader-optimization.md)
+for more details on how to reduce this impact.
+
 ### autoload-dev <span>([root-only](04-schema.md#root-package))</span>
 
 This section allows to define autoload rules for development purposes.
@@ -667,9 +692,9 @@ it in your file to avoid surprises.
 
 All versions of each package are checked for stability, and those that are less
 stable than the `minimum-stability` setting will be ignored when resolving
-your project dependencies. Specific changes to the stability requirements of
-a given package can be done in `require` or `require-dev` (see
-[package links](#package-links)).
+your project dependencies. (Note that you can also specify stability requirements
+on a per-package basis using stability flags in the version constraints that you
+specify in a `require` block (see [package links](#package-links) for more details).
 
 Available options (in order of stability) are `dev`, `alpha`, `beta`, `RC`,
 and `stable`.
@@ -761,6 +786,20 @@ Example:
 will look from the first to the last repository, and pick the first match.
 By default Packagist is added last which means that custom repositories can
 override packages from it.
+
+Using JSON object notation is also possible. However, JSON key/value pairs
+are to be considered unordered so consistent behaviour cannot be guaranteed.
+
+ ```json
+{
+    "repositories": {
+         "foo": {
+             "type": "composer",
+             "url": "http://packages.foo.com"
+         }
+    }
+}
+ ```
 
 ### config <span>([root-only](04-schema.md#root-package))</span>
 

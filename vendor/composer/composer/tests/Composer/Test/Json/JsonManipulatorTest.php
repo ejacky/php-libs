@@ -109,6 +109,28 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
 }
 ',
             ),
+
+
+            array(
+                '{
+    "require":
+    {
+        "foo": "bar",
+        "vendor/baz": "baz"
+    }
+}',
+                'require',
+                'vEnDoR/bAz',
+                'qux',
+                '{
+    "require":
+    {
+        "foo": "bar",
+        "vendor/baz": "qux"
+    }
+}
+',
+            ),
             array(
                 '{
     "require":
@@ -119,6 +141,26 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
 }',
                 'require',
                 'vendor/baz',
+                'qux',
+                '{
+    "require":
+    {
+        "foo": "bar",
+        "vendor/baz": "qux"
+    }
+}
+',
+            ),
+            array(
+                '{
+    "require":
+    {
+        "foo": "bar",
+        "vendor\/baz": "baz"
+    }
+}',
+                'require',
+                'vEnDoR/bAz',
                 'qux',
                 '{
     "require":
@@ -292,7 +334,7 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
     },
     "repositories": [
         {
-            "packagist": false
+            "packagist.org": false
         },
         {
             "type": "package",
@@ -773,7 +815,7 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
     },
     "repositories": [
         {
-            "packagist": false
+            "packagist.org": false
         },
         {
             "type": "package",
@@ -1542,7 +1584,7 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
 }
 ',
             ),
-            'fails on deep repos with borked texts' => array(
+            'works on deep repos with borked texts' => array(
                 '{
     "repositories": {
         "foo": {
@@ -1551,9 +1593,21 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
     }
 }',
                 'bar',
-                false,
+                true,
+                '{
+    "repositories": {
+        "foo": {
+            "package": { "bar": "ba{z" }
+        }
+    }
+}
+',
+
+                '{
+}
+',
             ),
-            'fails on deep repos with borked texts2' => array(
+            'works on deep repos with borked texts2' => array(
                 '{
     "repositories": {
         "foo": {
@@ -1562,7 +1616,19 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
     }
 }',
                 'bar',
-                false,
+                true,
+                '{
+    "repositories": {
+        "foo": {
+            "package": { "bar": "ba}z" }
+        }
+    }
+}
+',
+
+                '{
+}
+',
             ),
             'fails on deep arrays with borked texts' => array(
                 '{
@@ -1686,6 +1752,47 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
     "require-dev": {
         "package/d": "*",
         "package/e": "*"
+    }
+}
+', $manipulator->getContents());
+    }
+
+    public function testAddExtraWithPackage()
+    {
+        //$this->markTestSkipped();
+        $manipulator = new JsonManipulator('{
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "authors": [],
+                "extra": {
+                    "package-xml": "package.xml"
+                }
+            }
+        }
+    ],
+    "extra": {
+        "auto-append-gitignore": true
+    }
+}');
+
+        $this->assertTrue($manipulator->addProperty('extra.foo-bar', true));
+        $this->assertEquals('{
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "authors": [],
+                "extra": {
+                    "package-xml": "package.xml"
+                }
+            }
+        }
+    ],
+    "extra": {
+        "auto-append-gitignore": true,
+        "foo-bar": true
     }
 }
 ', $manipulator->getContents());
@@ -2201,7 +2308,6 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{
 }
 ', $manipulator->getContents());
-
     }
 
     public function testIndentDetection()
@@ -2224,5 +2330,35 @@ class JsonManipulatorTest extends \PHPUnit_Framework_TestCase
   }
 }
 ', $manipulator->getContents());
+    }
+
+    public function testRemoveMainKeyAtEndOfFile()
+    {
+        $manipulator = new JsonManipulator('{
+    "require": {
+        "package/a": "*"
+    }
+}
+');
+        $this->assertTrue($manipulator->addMainKey('homepage', 'http...'));
+        $this->assertTrue($manipulator->addMainKey('license', 'mit'));
+        $this->assertEquals('{
+    "require": {
+        "package/a": "*"
+    },
+    "homepage": "http...",
+    "license": "mit"
+}
+', $manipulator->getContents());
+
+        $this->assertTrue($manipulator->removeMainKey('homepage'));
+        $this->assertTrue($manipulator->removeMainKey('license'));
+        $this->assertEquals('{
+    "require": {
+        "package/a": "*"
+    }
+}
+', $manipulator->getContents());
+
     }
 }
