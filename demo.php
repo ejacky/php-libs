@@ -71,10 +71,9 @@ $nav_m = array(
 
 $nav_e = array(
     'for_test' => array(
-        'order' => 100,
         'name' => '测试',
         'items' => array(
-            array('name' => 'ce', 'order' => 0)
+            'index' => array('name' => 'ce')
         )
     )
 );
@@ -230,15 +229,15 @@ function array_recursive_add_order_t(array & $r_array, $item_ids,  $start_p = 0,
         }
 
         if (is_array($item)) {
-            if (!isset($item[$sort_field])  )
-                $item[$sort_field] = intval($order_v);
-
             $all_keys = array_keys($item);
+            if (!isset($item[$sort_field])  && in_array($key, $item_ids))
+                $item[$sort_field] = intval($order_v);
             $item_id = array_intersect($all_keys, $item_ids);
             if (count($item_id) == 1 && is_array($item[current($item_id)])) {
                 array_recursive_add_order_t($item[current($item_id)], $item_ids);
             }
-        } else if (in_array($key, $item_ids)){
+        } //else if (in_array($key, $item_ids))
+        else {
             $r_array[$sort_field] = intval($order_v);
         }
     }
