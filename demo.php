@@ -36,7 +36,7 @@ $logger->pushHandler(new FirePHPHandler());
 
 //exit;
 
-$nav_m = array('navigates' =>array(
+$nav_m = array(
 
     'home_page' => array(
         //'order' => 30,
@@ -55,13 +55,13 @@ $nav_m = array('navigates' =>array(
         )
     ),
     'device_mgr' => array(
-        'order' => 20,
+        //'order' => 20,
         'name' => '设备管理',
         'items' => array(
             'usb_mgr' => array('order' => 10, 'name' => '移动存储')
         )
     ),
-));
+);
 
 //$nav_m = array('a' => '2', 'b' => '3', 'c' => '4');
 //$keys = array_keys($nav_m);
@@ -75,6 +75,16 @@ $nav_e = array(
         'name' => '测试',
         'items' => array(
             array('name' => 'ce', 'order' => 0)
+        )
+    )
+);
+
+$nav_e_2 = array(
+    'client_mgr' => array(
+        'order' => 100,
+        'name' => '测试',
+        'items' => array(
+            'index' => array('name' => 'ce', 'order' => 50)
         )
     )
 );
@@ -174,7 +184,7 @@ $a5 = array(
         //'order' => 40,
         'name'  => '终端管理',
         'items' => array(
-            'cli_summary' => array('order' => 30, 'name' => '终端概况'),
+            'cli_summary' => array('name' => '终端概况'),
             'virus_sec'  => array('name' => '病毒查杀'),
             'leak_mgr'   => array('order' => 10, 'name' => '漏洞管理', 'sub_items' => array('leak_mgr_cli' => array('name' => '按终端显示', 'action' => 'byterminal'), 'leak_mgr_cli_item' => array('name' => '按漏洞显示', 'order' => 10, 'action' => 'byitem')))
         )
@@ -208,21 +218,34 @@ function array_merge_recursive_distinct ( array &$array1, array &$array2 )
     return $merged;
 }
 
-function array_merge_add_order_t(array & $array1, array & $array2, $item_ids = array('items', 'sub_items'), $sort_field = 'order')
+function array_recursive_add_order_t(array & $r_array, $item_ids,  $start_p = 0, $sort_field = 'order')
 {
-    // 两种情况
-    // 1 直接 merge
-    // 2 在 原里面有 该 key
+    foreach ($r_array as $key => &$item) {
+        if ($start_p != 0 ) {  // 若 子集导航中设置 新的 order 则按新设置的 权重。
+            $order_v = 10 * ($start_p + 1);
+        }
 
-//    array_recursive_add_order($array1, $item_ids, $sort_field);
-//    $start_order = @max(array_column($array1, $sort_field));
-//    if ($start_order === false) {$start_order = 0;}
-//    array_recursive_add_order($array2, $item_ids, $sort_field, $start_order);
+        else {
+            $order_v = 10 * (array_search($key, array_keys($r_array)) + 1);
+        }
 
-    return array_merge($array1, $array2);
+        if (is_array($item)) {
+            if (!isset($item[$sort_field])  )
+                $item[$sort_field] = intval($order_v);
 
-
+            $all_keys = array_keys($item);
+            $item_id = array_intersect($all_keys, $item_ids);
+            if (count($item_id) == 1 && is_array($item[current($item_id)])) {
+                array_recursive_add_order_t($item[current($item_id)], $item_ids);
+            }
+        } else if (in_array($key, $item_ids)){
+            $r_array[$sort_field] = intval($order_v);
+        }
+    }
 }
+
+
+
 
 function array_merge_recursive_ex_t(array & $array1, array & $array2, $generate_key = true, $items_id = array('items', 'sub_items'), $sort_field= 'order')
 {
@@ -244,6 +267,8 @@ function array_merge_recursive_ex_t(array & $array1, array & $array2, $generate_
                 //array_recursive_add_order($w_merge, $items_id);
                 $merged[$key] = $value;
             }else{
+                array_recursive_add_order_t($merged, $items_id);
+                array_recursive_add_order_t($value, $items_id, count($merged));
                 $merged[$key] = array_merge_recursive_ex_t($merged[$key], $value);
             }
         } else if (is_numeric($key) && $generate_key)
@@ -253,8 +278,15 @@ function array_merge_recursive_ex_t(array & $array1, array & $array2, $generate_
         } else {
             //$w_merge = array($key => $value);
             //array_recursive_add_order($w_merge, $items_id);
-            $t_m[''] = array($merged);
-            array_recursive_add_order($t_m, $items_id);
+            ////$t_m[''] = array($merged);
+//            array_recursive_add_order_t($merged, $items_id);
+//            array_recursive_add_order_t($value, $items_id, count($merged));
+            if (is_array($value)) {
+                array_recursive_add_order_t($merged, $items_id);
+                array_recursive_add_order_t($value, $items_id, count($merged));
+            }
+
+            // 递归， 有的话， 就覆盖，没有的话，就追加
             $merged[$key] = $value;
         }
 
@@ -270,11 +302,11 @@ function array_merge_recursive_ex_t(array & $array1, array & $array2, $generate_
 //$t4 = array_merge_recursive_ex($a4, $b4);
 //$t5 = array_merge_recursive_ex($a5, $b5);
 
-array_recursive_add_order($nav_m, array('navigates', 'items', 'sub_items'));
-$logger->info(json_encode($nav_m));
-exit;
-$merged = array_merge_recursive_ex_t($a5, $b5);
-var_dump(json_encode($merged));
+//array_recursive_add_order($nav_m, array('navigates', 'items', 'sub_items'));
+//$logger->info(json_encode($nav_m));
+//exit;
+$merged = array_merge_recursive_ex_t($nav_m, $nav_e);
+$logger->info(json_encode($merged));
 //var_dump(json_encode($b4));
 
 //$merged = array_merge_add_order($a4, $b4, array('items', 'sub_items'));
