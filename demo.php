@@ -219,6 +219,30 @@ function array_merge_recursive_distinct ( array &$array1, array &$array2 )
     return $merged;
 }
 
+function array_merge_recursive_distinct_t ( array &$array1, array &$array2 )
+{
+    $merged = $array1;
+
+    foreach ( $array2 as $key => &$value )
+    {
+        if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) )
+        {
+            //array_recursive_add_order_t_3($merged, array('items', 'sub_items'));
+            array_recursive_add_order_t_3($array2, array('items', 'sub_items'), count($merged));
+            $r_value = array_merge_recursive_distinct_t ( $merged [$key], $value );
+            $merged [$key] = $r_value;
+        }
+        else
+        {
+//            array_recursive_add_order_t_2($merged, array('items', 'sub_items'));
+//            array_recursive_add_order_t_2($array2, array('items', 'sub_items'), count($merged));
+            $merged [$key] = $value;
+        }
+    }
+
+    return $merged;
+}
+
 function array_recursive_add_order_t(array & $r_array, $item_ids,  $start_p = 0, $sort_field = 'order')
 {
     foreach ($r_array as $key => &$item) {
@@ -287,6 +311,35 @@ function array_recursive_add_order_t_2(array & $r_array, $item_ids, $start_p = 0
 }
 
 /**
+ * 原来的递归 merge 还是需要
+ * 只能修改 add order 方法， 使之适应
+ * @param array $r_array
+ * @param $item_ids
+ * @param int $start_p
+ * @param string $sort_field
+ */
+function array_recursive_add_order_t_3(array & $r_array, $item_ids, $start_p = 0, $sort_field = 'order')
+{
+    foreach ($r_array as $key => &$item) {
+        if ($start_p != 0 ) {  // 若 子集导航中设置 新的 order 则按新设置的 权重。
+            $order_v = 10 * ($start_p + 1);
+        }
+        else {
+            $order_v = 10 * (array_search($key, array_keys($r_array)) + 1);
+        }
+
+        if (!isset($item[$sort_field])) {
+            $item[$sort_field] = $order_v;
+        }
+        $all_keys = array_keys($item);
+        $item_id = array_intersect($all_keys, $item_ids);
+        if (count($item_id) == 1 && is_array($item[current($item_id)])) {
+            array_recursive_add_order_t_2($item[current($item_id)], $item_ids);
+        }
+    }
+}
+
+/**
  * 在外层直接合并的情况
  * @param array $array1
  * @param array $array2
@@ -296,6 +349,9 @@ function array_recursive_add_order_t_2(array & $r_array, $item_ids, $start_p = 0
  */
 function array_merge_add_order_t_c1(array & $array1, array & $array2, $item_ids, $sort_field = 'order')
 {
+    //////////////////////////////
+
+
     $keys1= array_keys($array1);
     $keys2 = array_keys($array2);
     $c_keys = array_intersect($keys1, $keys2);
@@ -305,8 +361,15 @@ function array_merge_add_order_t_c1(array & $array1, array & $array2, $item_ids,
         return array_merge($array1, $array2);
     } else {
         $merged = $array1;
-        foreach ($c_keys as $key) {
-            $merged[$key] = array_merge_add_order_t_c2($array1[$key], $array2[$key], $item_ids);
+//        foreach ($c_keys as $key) {
+//            $merged[$key] = array_merge_add_order_t_c2($array1[$key], $array2[$key], $item_ids);
+//        }
+        foreach ($array2 as $key => &$value) {
+            if (in_array($key, $c_keys)) {
+                $merged[$key] = array_merge_add_order_t_c2($array1[$key], $array2[$key], $item_ids);
+            } else {
+                $merged[$key] = $value;
+            }
         }
         return $merged;
     }
@@ -394,10 +457,11 @@ function array_merge_recursive_ex_t(array & $array1, array & $array2, $generate_
 
 //array_recursive_add_order_t_2($nav_m, array('navigates', 'items', 'sub_items'));
 //$logger->info(json_encode($nav_m));
-$t = array_merge_add_order_t_c1($a5, $b5, array('items', 'sub_items'));
-$logger->info(json_encode($t));
-exit;
-$merged = array_merge_recursive_ex_t($nav_m, $nav_e_2);
+//$t = array_merge_add_order_t_c1($a5, $b5, array('items', 'sub_items'));
+
+//$logger->info(json_encode($t));
+//exit;
+$merged = array_merge_recursive_distinct_t($nav_m, $nav_e_2);
 $logger->info(json_encode($merged));
 //var_dump(json_encode($b4));
 
