@@ -83,7 +83,7 @@ $nav_e_2 = array(
         'order' => 100,
         'name' => '测试',
         'items' => array(
-            'index' => array('name' => 'ce', 'order' => 50)
+            'index' => array('name' => 'ce')
         )
     )
 );
@@ -126,6 +126,8 @@ function array_recursive_add_order(array & $r_array, $item_ids, $sort_field = 'o
         }
     }
 }
+
+
 
 //$merged = array_merge_add_order($nav_m, $nav_e, array('items', 'sub_items'));
 //var_dump(json_encode($merged));
@@ -192,7 +194,7 @@ $a5 = array(
 $b5 = array(
     'client_mgr' => array(
         'items' => array(
-            'index' => array('name' => 'ce')
+            'index' => array('name' => 'ce', 'sub_items' => array('new' => array('name' => 'ww')))
         )
     )
 );
@@ -223,7 +225,6 @@ function array_recursive_add_order_t(array & $r_array, $item_ids,  $start_p = 0,
         if ($start_p != 0 ) {  // 若 子集导航中设置 新的 order 则按新设置的 权重。
             $order_v = 10 * ($start_p + 1);
         }
-
         else {
             $order_v = 10 * (array_search($key, array_keys($r_array)) + 1);
         }
@@ -243,6 +244,96 @@ function array_recursive_add_order_t(array & $r_array, $item_ids,  $start_p = 0,
     }
 }
 
+
+/**
+ * 稳定代码
+ * 对 array('home' => array(
+ *      'name' => 'xx',
+ *      'items' => array(
+'index' => array(),
+ *          'soft'  => array(
+'name' => 'yy',
+ *              'sub_items' => array(
+'ww' => array(),
+ *                  'zz' => array(),
+ *              )
+ *      ),
+ * )
+ *
+ * @param array $r_array
+ * @param $item_ids
+ * @param string $sort_field
+ * @param int $start_order
+ */
+function array_recursive_add_order_t_2(array & $r_array, $item_ids, $start_p = 0, $sort_field = 'order')
+{
+    foreach ($r_array as $key => &$item) {
+        if ($start_p != 0 ) {  // 若 子集导航中设置 新的 order 则按新设置的 权重。
+            $order_v = 10 * ($start_p + 1);
+        }
+        else {
+            $order_v = 10 * (array_search($key, array_keys($r_array)) + 1);
+        }
+
+        if (!isset($item[$sort_field])) {
+            $item[$sort_field] = $order_v;
+        }
+        $all_keys = array_keys($item);
+        $item_id = array_intersect($all_keys, $item_ids);
+        if (count($item_id) == 1 && is_array($item[current($item_id)])) {
+            array_recursive_add_order_t_2($item[current($item_id)], $item_ids);
+        }
+    }
+}
+
+/**
+ * 在外层直接合并的情况
+ * @param array $array1
+ * @param array $array2
+ * @param $item_ids
+ * @param string $sort_field
+ * @return array
+ */
+function array_merge_add_order_t_c1(array & $array1, array & $array2, $item_ids, $sort_field = 'order')
+{
+    $keys1= array_keys($array1);
+    $keys2 = array_keys($array2);
+    $c_keys = array_intersect($keys1, $keys2);
+    if (count($c_keys) == 0) {
+        array_recursive_add_order_t_2($array1, $item_ids);
+        array_recursive_add_order_t_2($array2, $item_ids, count($array1));
+        return array_merge($array1, $array2);
+    } else {
+        $merged = $array1;
+        foreach ($c_keys as $key) {
+            $merged[$key] = array_merge_add_order_t_c2($array1[$key], $array2[$key], $item_ids);
+        }
+        return $merged;
+    }
+}
+
+/**
+ * 有相同 key 的情况
+ * @param array $array1
+ * @param array $array2
+ * @param $item_ids
+ * @param string $sort_field
+ * @return array
+ */
+function array_merge_add_order_t_c2(array & $array1, array & $array2, $item_ids, $sort_field = 'order')
+{
+    $keys1 = array_keys($array1);
+    $keys2 = array_keys($array2);
+    $item_c = array_intersect($keys1, $keys2);
+    $item_id = array_intersect($item_c, $item_ids);
+    $b1 = is_array($array1[current($item_id)]);
+    $b2 = is_array($array2[current($item_id)]);
+    if (count($item_id) == 1 && $b1 && $b2)
+    //if (count($item_id) == 1 && is_array($array1[current($item_id)] && is_array($array2[current($item_id)])))
+    {
+        return array_merge_add_order_t_c1($array1[current($item_id)], $array2[current($item_id)], $item_ids);
+    }
+}
 
 
 
@@ -301,10 +392,12 @@ function array_merge_recursive_ex_t(array & $array1, array & $array2, $generate_
 //$t4 = array_merge_recursive_ex($a4, $b4);
 //$t5 = array_merge_recursive_ex($a5, $b5);
 
-//array_recursive_add_order($nav_m, array('navigates', 'items', 'sub_items'));
+//array_recursive_add_order_t_2($nav_m, array('navigates', 'items', 'sub_items'));
 //$logger->info(json_encode($nav_m));
-//exit;
-$merged = array_merge_recursive_ex_t($nav_m, $nav_e);
+$t = array_merge_add_order_t_c1($a5, $b5, array('items', 'sub_items'));
+$logger->info(json_encode($t));
+exit;
+$merged = array_merge_recursive_ex_t($nav_m, $nav_e_2);
 $logger->info(json_encode($merged));
 //var_dump(json_encode($b4));
 
