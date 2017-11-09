@@ -83,7 +83,9 @@ $nav_e_2 = array(
         'order' => 100,
         'name' => '测试',
         'items' => array(
-            'index' => array('name' => 'ce')
+            'index' => array('name' => 'ce', 'order' => 21, 'sub_items' => array('qq' => array('name' => 'xx'))),
+            'index_2'  => array('name' => 'yy'),
+            'leak_mgr'   => array('order' => 11, 'sub_items' => array('tt' => array('name' => 'mm'), 'gg' => array('name' => 'eee')))
         )
     )
 );
@@ -187,7 +189,7 @@ $a5 = array(
         'items' => array(
             'cli_summary' => array('name' => '终端概况'),
             'virus_sec'  => array('name' => '病毒查杀'),
-            'leak_mgr'   => array('order' => 10, 'name' => '漏洞管理', 'sub_items' => array('leak_mgr_cli' => array('name' => '按终端显示', 'action' => 'byterminal'), 'leak_mgr_cli_item' => array('name' => '按漏洞显示', 'order' => 10, 'action' => 'byitem')))
+            'leak_mgr'   => array('order' => 50, 'name' => '漏洞管理', 'sub_items' => array('leak_mgr_cli' => array('name' => '按终端显示', 'action' => 'byterminal'), 'leak_mgr_cli_item' => array('name' => '按漏洞显示', 'order' => 20, 'action' => 'byitem')))
         )
     )
 );
@@ -206,11 +208,15 @@ function array_merge_recursive_distinct ( array &$array1, array &$array2 )
 
     foreach ( $array2 as $key => &$value )
     {
+        // 同级中有相同 key 的
         if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) )
         {
             $merged [$key] = array_merge_recursive_distinct ( $merged [$key], $value );
+            if (in_array($key, array('items', 'sub_items'))) {
+                array_recursive_add_order_t_3($value, array('items', 'sub_items'));
+            }
         }
-        else
+        else // 同级中无相同 key 的
         {
             $merged [$key] = $value;
         }
@@ -219,6 +225,12 @@ function array_merge_recursive_distinct ( array &$array1, array &$array2 )
     return $merged;
 }
 
+/**
+ * 看来必须用这种递归方式加 order 了， 不然不能 merge 全部的值.
+ * @param array $array1
+ * @param array $array2
+ * @return array
+ */
 function array_merge_recursive_distinct_t ( array &$array1, array &$array2 )
 {
     $merged = $array1;
@@ -228,14 +240,14 @@ function array_merge_recursive_distinct_t ( array &$array1, array &$array2 )
         if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) )
         {
             //array_recursive_add_order_t_3($merged, array('items', 'sub_items'));
-            array_recursive_add_order_t_3($array2, array('items', 'sub_items'), count($merged));
+            //array_recursive_add_order_t_3($array2, array('items', 'sub_items'), count($merged));
             $r_value = array_merge_recursive_distinct_t ( $merged [$key], $value );
             $merged [$key] = $r_value;
         }
         else
         {
-//            array_recursive_add_order_t_2($merged, array('items', 'sub_items'));
-//            array_recursive_add_order_t_2($array2, array('items', 'sub_items'), count($merged));
+            array_recursive_add_order_t_3($merged, array('items', 'sub_items'));
+            array_recursive_add_order_t_3($array2, array('items', 'sub_items'), count($merged));
             $merged [$key] = $value;
         }
     }
@@ -334,7 +346,7 @@ function array_recursive_add_order_t_3(array & $r_array, $item_ids, $start_p = 0
         $all_keys = array_keys($item);
         $item_id = array_intersect($all_keys, $item_ids);
         if (count($item_id) == 1 && is_array($item[current($item_id)])) {
-            array_recursive_add_order_t_2($item[current($item_id)], $item_ids);
+            array_recursive_add_order_t_3($item[current($item_id)], $item_ids);
         }
     }
 }
@@ -448,20 +460,27 @@ function array_merge_recursive_ex_t(array & $array1, array & $array2, $generate_
     return $merged;
 }
 
+function array_merge_add_order_t(array &$array1, array &$array2)
+{
+    $merged = array_merge_recursive_distinct($array1, $array2);
+    array_recursive_add_order_t_3($merged, array('items', 'sub_items'));
+    return $merged;
+}
+
 //$t = array_merge_recursive_ex($a, $b);
 //$t1 = array_merge_recursive_ex($a1, $b1);
 //$t2 = array_merge_recursive_ex($a2, $b2);
 //$t3 = array_merge_recursive_ex($a3, $b3);
-//$t4 = array_merge_recursive_ex($a4, $b4);
-//$t5 = array_merge_recursive_ex($a5, $b5);
+//$t4 = array_merge_recursive_distinct($a4, $b4);
+//$t5 = array_merge_recursive_distinct($a4, $b4);
 
 //array_recursive_add_order_t_2($nav_m, array('navigates', 'items', 'sub_items'));
 //$logger->info(json_encode($nav_m));
 //$t = array_merge_add_order_t_c1($a5, $b5, array('items', 'sub_items'));
-
-//$logger->info(json_encode($t));
+//array_recursive_add_order_t_3($t5, array('items', 'sub_items'));
+//$logger->info(json_encode($t5));
 //exit;
-$merged = array_merge_recursive_distinct_t($nav_m, $nav_e_2);
+$merged = array_merge_add_order_t($nav_m, $nav_e_2);
 $logger->info(json_encode($merged));
 //var_dump(json_encode($b4));
 
