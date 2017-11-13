@@ -27,6 +27,7 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Container\\' => 14,
+            'Predis\\' => 7,
             'Pheanstalk\\' => 11,
         ),
         'M' => 
@@ -98,6 +99,10 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Predis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/predis/predis/src',
         ),
         'Pheanstalk\\' => 
         array (
