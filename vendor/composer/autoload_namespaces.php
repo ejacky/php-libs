@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ZPHP\\' => array($vendorDir . '/zphp/zphp'),
+    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'Mustache' => array($vendorDir . '/mustache/mustache/src'),
 );
