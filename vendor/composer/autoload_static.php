@@ -52,6 +52,10 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         array (
             'Hisune\\EchartsPHP\\' => 18,
         ),
+        'F' => 
+        array (
+            'Faker\\' => 6,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -148,6 +152,10 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         'Hisune\\EchartsPHP\\' => 
         array (
             0 => __DIR__ . '/..' . '/hisune/echarts-php/src',
+        ),
+        'Faker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

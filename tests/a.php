@@ -1,9 +1,10 @@
 <?php
+use PHPUnit\Framework\TestCase;
 
-class a
+class a extends TestCase
 {
-    public function a_t()
+    public function testAA()
     {
-        echo "this is ss a test";
+        $this->assertEquals(0,1);
     }
 }
