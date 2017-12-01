@@ -1,9 +1,11 @@
 <?php
 
 include "vendor/autoload.php";
-
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
 class My
 {
+    private $queryBuilder;
     private  $red;
     private $faker;
     private $log;
@@ -18,8 +20,27 @@ class My
 
     private function init()
     {
+        $this->initDb();
         $this->initConfig();
         $this->initLog();
+    }
+
+    private function initDb()
+    {
+        if (!$this->queryBuilder) {
+            $params = array(
+                'dbname' => 'skylar',
+                'user' => 'postgres',
+                'password' => 'postgres',
+                'driver' => 'pdo_pgsql',
+                'host' => 'localhost',
+                'port' => 5360
+            );
+            $conf = new Configuration();
+            $conn = DriverManager::getConnection($params, $conf);
+
+            $this->queryBuilder = $conn->createQueryBuilder();
+        }
     }
 
     private function initConfig()
@@ -105,28 +126,27 @@ class My
         });
     }
 
-    public function generateFakerData()
+    public function generateFakerData($row_number = 5)
     {
-        $mid = $this->generateRandomString(25);
-        $policy_name = $this->generateRandomString(3);
-        $data = array(
-            'time' => time(),
-            'mid' => $mid,
-            'server_info' => array(
-                $policy_name => array('conf_ver' => time())
-            )
-        );
-
         $i = 0;
         $stat_slot_key = floor((time() - 31 * 24 * 60 * 60) / 60);
-        while ($i < 3) {
+        while ($i < $row_number) {
+            $mid = $this->generateRandomString(25);
+            $policy_name = $this->generateRandomString(3);
+            $data = array(
+                'time' => time(),
+                'mid' => $mid,
+                'server_info' => array(
+                    $policy_name => array('conf_ver' => time())
+                )
+            );
             $this->recordPolicyLog($mid, $data, $stat_slot_key);
             $stat_slot_key++;
             $i++;
         }
     }
 
-    function generateRandomString($length = 10) {
+    public function generateRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -135,13 +155,34 @@ class My
         }
         return $randomString;
     }
+
+    public function testXX()
+    {
+
+        $a = array(
+            array('mid' => 234),
+            array('mid' => 3424),
+        );
+        //var_dump(array_column($a, 'mid'));
+
+        //$this->parseTime(25198985);
+//        $stmt = $this->db->query('select * from client');
+//        while ($row = $stmt->fetch()) {
+//            echo $row['mac'];
+//        }
+        $ret = $this->queryBuilder->select('mid')->from('client');
+        var_dump($ret);
+    }
 }
 
 $my = new My();
-$my->parseTime('25180324');
+$my->testXX();
+exit;
+$my->parseTime('25181896');
+echo PHP_EOL;
 echo date('Y-m-d H:i');
-//$my->generateFakerData();
-$my->cleanPolicyCache();
+$my->generateFakerData(30);
+//$my->cleanPolicyCache();
 //$my->cleanTest();
 //$my->record_policy_log();
 //$my->my_test();
