@@ -161,6 +161,12 @@ class My
     public function testXX()
     {
 
+        $dotenv = new Dotenv\Dotenv(__DIR__);
+        $dotenv->load();
+
+        dump(getenv('name'));
+        exit;
+
         $shell = new Shell();
         $shell->run();
         exit;
