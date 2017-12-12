@@ -3,6 +3,8 @@
 include "vendor/autoload.php";
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
+use Psy\Shell;
+
 class My
 {
     private $queryBuilder;
@@ -158,6 +160,10 @@ class My
 
     public function testXX()
     {
+
+        $shell = new Shell();
+        $shell->run();
+        exit;
 
         $a = array(
             array('mid' => 234),
