@@ -1,5 +1,21 @@
 <?php
 include "vendor/autoload.php";
+
+
+$a = array(
+    'a' => 'ss',
+    'b' => 'cc',
+    'c' => 'ss'
+);
+
+$b = array(
+    'a' => 'ss',
+    'b' => 'cc',
+    'c' => 'ss'
+);
+var_dump($a == $b);
+
+exit;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
