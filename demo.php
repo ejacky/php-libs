@@ -1,5 +1,46 @@
 <?php
 include "vendor/autoload.php";
+error_reporting(E_ALL);
+
+
+class z
+{
+    function c() {
+        echo "this is c\n";
+        $this->b();
+    }
+
+    function b() {
+        echo "this is parent b\n";
+    }
+
+}
+
+class j extends z
+{
+    function a() {
+        echo "this is a\n";
+    }
+
+    function b() {
+        echo "this is b\n";
+
+    }
+}
+$t  = new j;
+$t->c();
+exit;
+class A {
+    function f() { echo get_class($this); }
+}
+
+
+class B {
+    function f() { A::f(); }
+}
+
+(new B)->f();
+exit;
 
 
 $a = array(

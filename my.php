@@ -158,8 +158,35 @@ class My
         return $randomString;
     }
 
-    public function testXX()
+    public function testFeature()
     {
+
+
+        function sum(...$numbers) {
+            $acc = 0;
+            foreach ($numbers as $n) {
+                $acc += $n;
+            }
+            return $acc;
+        }
+
+        echo sum(1,2,3,4);
+        echo PHP_EOL;
+
+        function add($a, $b) {
+            return $a + $b;
+        }
+        echo add(...[1, 2]) . "\n";
+
+        $a = [1, 2];
+        echo add(...$a);
+    }
+
+    public function testLib()
+    {
+
+        $this->faker->unixTime();
+        exit;
 
         $dotenv = new Dotenv\Dotenv(__DIR__);
         $dotenv->load();
@@ -188,7 +215,9 @@ class My
 }
 
 $my = new My();
-$my->testXX();
+$my->testFeature();
+
+//$my->testXX();
 exit;
 $my->parseTime('25181896');
 echo PHP_EOL;

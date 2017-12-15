@@ -3,9 +3,17 @@ include "vendor/autoload.php";
 
 use Pheanstalk\Pheanstalk;
 
-$pheanstalk = new Pheanstalk('10.98.2.115');
-$red_cli = new \Predis\Client('tcp://10.98.2.115:6379');
-$faker = Faker\Factory::create();
+$pheanstalk = new Pheanstalk('127.0.0.1');
+$pheanstalk->useTube('testtube')->put('job playload goes here\h');
+$pheanstalk->useTube('testtube')->put('zz\h');
+$pheanstalk->useTube('testtube')->put('jj\h');
+
+$job = $pheanstalk->watch('testtube')->ignore('default')->reserve();
+var_dump($pheanstalk->statsTube('work_queue_odp2daemon_reportlite_order'));
+
+exit;
+//$red_cli = new \Predis\Client('tcp://10.98.2.115:6379');
+//$faker = Faker\Factory::create();
 //
 //if (class_exists('Tideways\Profiler')) {
 //    echo "hello world";
@@ -23,11 +31,7 @@ $faker = Faker\Factory::create();
 //    \Tideways\Profiler::stop();
 //}
 
-//$pheanstalk->useTube('testtube')->put('job playload goes here\h');
-//$pheanstalk->useTube('testtube')->put('zz\h');
-//$pheanstalk->useTube('testtube')->put('jj\h');
 
-//$job = $pheanstalk->watch('testtube')->ignore('default')->reserve();
 
 //$i = 0;
 
