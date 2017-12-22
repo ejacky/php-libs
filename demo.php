@@ -1,7 +1,48 @@
 <?php
+
+
 include "vendor/autoload.php";
 error_reporting(E_ALL);
 
+function xrange($start, $end, $step = 1) {
+    for ($i = $start; $i <= $end; $i += $step) {
+        yield $i;
+    }
+}
+
+foreach (xrange(1, 100) as $num) {
+    echo $num, "\n";
+}
+
+exit;
+$kernel = \AspectMock\Kernel::getInstance();
+$kernel->init([
+    'debug' => true,
+    'includePaths' => [__DIR__.'/../src']
+]);
+
+
+
+
+
+
+exit;
+
+ob_start();
+
+echo "Hello ";
+
+$out1 = ob_get_contents();
+
+echo "World";
+
+$out2 = ob_get_contents();
+
+ob_end_clean();
+
+var_dump($out1, $out2);
+
+exit;
 
 class z
 {

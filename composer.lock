@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4fef5a888c7f21a47b8ab57e0cca97a",
+    "content-hash": "c7a91baa5bf59469719dad56438da598",
     "packages": [
         {
             "name": "anomaly/installer-module",
@@ -106,16 +106,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.5.5",
+            "version": "1.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "aab6229c9a4b6731f23b36107c39f4007c290b50"
+                "reference": "4f7f9c12753ec43f1e4629e2a71cabe81f2a4eab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/composer/composer/aab6229c9a4b6731f23b36107c39f4007c290b50.zip",
-                "reference": "aab6229c9a4b6731f23b36107c39f4007c290b50",
+                "url": "https://files.phpcomposer.com/files/composer/composer/4f7f9c12753ec43f1e4629e2a71cabe81f2a4eab.zip",
+                "reference": "4f7f9c12753ec43f1e4629e2a71cabe81f2a4eab",
                 "shasum": ""
             },
             "require": {
@@ -179,7 +179,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2017-12-01T13:42:57+00:00"
+            "time": "2017-12-18T11:09:18+00:00"
         },
         {
             "name": "composer/semver",
@@ -1870,16 +1870,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "2cdef78de8f54f68ff16a857e710e7302b47d4c7"
+                "reference": "9f21adfb92a9315b73ae2ed43138988ee4913d4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/console/2cdef78de8f54f68ff16a857e710e7302b47d4c7.zip",
-                "reference": "2cdef78de8f54f68ff16a857e710e7302b47d4c7",
+                "url": "https://files.phpcomposer.com/files/symfony/console/9f21adfb92a9315b73ae2ed43138988ee4913d4e.zip",
+                "reference": "9f21adfb92a9315b73ae2ed43138988ee4913d4e",
                 "shasum": ""
             },
             "require": {
@@ -1935,20 +1935,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-12-02T18:20:11+00:00"
+            "time": "2017-12-14T19:40:10+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "fb2001e5d85f95d8b6ab94ae3be5d2672df128fd"
+                "reference": "543deab3ffff94402440b326fc94153bae2dfa7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/debug/fb2001e5d85f95d8b6ab94ae3be5d2672df128fd.zip",
-                "reference": "fb2001e5d85f95d8b6ab94ae3be5d2672df128fd",
+                "url": "https://files.phpcomposer.com/files/symfony/debug/543deab3ffff94402440b326fc94153bae2dfa7a.zip",
+                "reference": "543deab3ffff94402440b326fc94153bae2dfa7a",
                 "shasum": ""
             },
             "require": {
@@ -1991,20 +1991,20 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-21T09:01:46+00:00"
+            "time": "2017-12-12T08:27:14+00:00"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "de56eee71e0a128d8c54ccc1909cdefd574bad0f"
+                "reference": "25b135bea251829e3db6a77d773643408b575ed4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/filesystem/de56eee71e0a128d8c54ccc1909cdefd574bad0f.zip",
-                "reference": "de56eee71e0a128d8c54ccc1909cdefd574bad0f",
+                "url": "https://files.phpcomposer.com/files/symfony/filesystem/25b135bea251829e3db6a77d773643408b575ed4.zip",
+                "reference": "25b135bea251829e3db6a77d773643408b575ed4",
                 "shasum": ""
             },
             "require": {
@@ -2040,11 +2040,11 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-19T18:59:05+00:00"
+            "time": "2017-12-14T19:40:10+00:00"
         },
         {
             "name": "symfony/finder",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -2152,16 +2152,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "db25e810fd5e124085e3777257d0cf4ae533d0ea"
+                "reference": "bb3ef65d493a6d57297cad6c560ee04e2a8f5098"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/process/db25e810fd5e124085e3777257d0cf4ae533d0ea.zip",
-                "reference": "db25e810fd5e124085e3777257d0cf4ae533d0ea",
+                "url": "https://files.phpcomposer.com/files/symfony/process/bb3ef65d493a6d57297cad6c560ee04e2a8f5098.zip",
+                "reference": "bb3ef65d493a6d57297cad6c560ee04e2a8f5098",
                 "shasum": ""
             },
             "require": {
@@ -2197,20 +2197,20 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-22T12:18:49+00:00"
+            "time": "2017-12-14T19:40:10+00:00"
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "ec650a975a8e04e0c114d35eab732981243db3a2"
+                "reference": "757074cf71b952ce9e75b557538948811c2bf006"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/var-dumper/ec650a975a8e04e0c114d35eab732981243db3a2.zip",
-                "reference": "ec650a975a8e04e0c114d35eab732981243db3a2",
+                "url": "https://files.phpcomposer.com/files/symfony/var-dumper/757074cf71b952ce9e75b557538948811c2bf006.zip",
+                "reference": "757074cf71b952ce9e75b557538948811c2bf006",
                 "shasum": ""
             },
             "require": {
@@ -2266,7 +2266,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2017-11-30T14:59:23+00:00"
+            "time": "2017-12-11T22:06:16+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -2370,6 +2370,49 @@
     ],
     "packages-dev": [
         {
+            "name": "codeception/aspect-mock",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/AspectMock.git",
+                "reference": "bf3c000599c0dc75ecb52e19dee2b8ed294cf7ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/Codeception/AspectMock/bf3c000599c0dc75ecb52e19dee2b8ed294cf7ba.zip",
+                "reference": "bf3c000599c0dc75ecb52e19dee2b8ed294cf7ba",
+                "shasum": ""
+            },
+            "require": {
+                "goaop/framework": "^2.0.0",
+                "php": ">=5.6.0",
+                "symfony/finder": "~2.4|~3.0"
+            },
+            "require-dev": {
+                "codeception/base": "~2.1",
+                "codeception/specify": "~0.3",
+                "codeception/verify": "~0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "AspectMock": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Bodnarchuk",
+                    "email": "davert@codeception.com"
+                }
+            ],
+            "description": "Experimental Mocking Framework powered by Aspects",
+            "time": "2017-10-24T10:20:17+00:00"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.0.5",
             "source": {
@@ -2422,6 +2465,175 @@
                 "instantiate"
             ],
             "time": "2015-06-14T21:17:01+00:00"
+        },
+        {
+            "name": "goaop/framework",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/goaop/framework.git",
+                "reference": "6e2a0fe13c1943db02a67588cfd27692bddaffa5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/goaop/framework/6e2a0fe13c1943db02a67588cfd27692bddaffa5.zip",
+                "reference": "6e2a0fe13c1943db02a67588cfd27692bddaffa5",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "~1.0",
+                "goaop/parser-reflection": "~1.2",
+                "jakubledl/dissect": "~1.0",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "adlawson/vfs": "^0.12",
+                "doctrine/orm": "^2.5",
+                "phpunit/phpunit": "^4.8",
+                "symfony/console": "^2.7|^3.0"
+            },
+            "suggest": {
+                "symfony/console": "Enables the usage of the command-line tool."
+            },
+            "bin": [
+                "bin/aspect"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Go\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lisachenko Alexander",
+                    "homepage": "https://github.com/lisachenko"
+                }
+            ],
+            "description": "Framework for aspect-oriented programming in PHP.",
+            "homepage": "http://go.aopphp.com/",
+            "keywords": [
+                "aop",
+                "aspect",
+                "library",
+                "php"
+            ],
+            "time": "2017-07-12T11:46:25+00:00"
+        },
+        {
+            "name": "goaop/parser-reflection",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/goaop/parser-reflection.git",
+                "reference": "adfc38fee63014880932ebcc4810871b8e33edc9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/goaop/parser-reflection/adfc38fee63014880932ebcc4810871b8e33edc9.zip",
+                "reference": "adfc38fee63014880932ebcc4810871b8e33edc9",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^1.2|^2.0|^3.0",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Go\\ParserReflection\\": "src"
+                },
+                "files": [
+                    "src/bootstrap.php"
+                ],
+                "exclude-from-classmap": [
+                    "/tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Lisachenko",
+                    "email": "lisachenko.it@gmail.com"
+                }
+            ],
+            "description": "Provides reflection information, based on raw source",
+            "time": "2017-09-03T14:59:13+00:00"
+        },
+        {
+            "name": "jakubledl/dissect",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jakubledl/dissect.git",
+                "reference": "d3a391de31e45a247e95cef6cf58a91c05af67c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/jakubledl/dissect/d3a391de31e45a247e95cef6cf58a91c05af67c4.zip",
+                "reference": "d3a391de31e45a247e95cef6cf58a91c05af67c4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/console": "~2.1"
+            },
+            "suggest": {
+                "symfony/console": "for the command-line tool"
+            },
+            "bin": [
+                "bin/dissect.php",
+                "bin/dissect"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Dissect": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "unlicense"
+            ],
+            "authors": [
+                {
+                    "name": "Jakub Lédl",
+                    "email": "jakubledl@gmail.com"
+                }
+            ],
+            "description": "Lexing and parsing in pure PHP",
+            "homepage": "https://github.com/jakubledl/dissect",
+            "keywords": [
+                "ast",
+                "lexing",
+                "parser",
+                "parsing"
+            ],
+            "time": "2013-01-29T21:29:14+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3582,16 +3794,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "f6a99b95b338799645fe9f7880d7d4ca1bf79cc1"
+                "reference": "afe0cd38486505c9703707707d91450cfc1bd536"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/symfony/yaml/f6a99b95b338799645fe9f7880d7d4ca1bf79cc1.zip",
-                "reference": "f6a99b95b338799645fe9f7880d7d4ca1bf79cc1",
+                "url": "https://files.phpcomposer.com/files/symfony/yaml/afe0cd38486505c9703707707d91450cfc1bd536.zip",
+                "reference": "afe0cd38486505c9703707707d91450cfc1bd536",
                 "shasum": ""
             },
             "require": {
@@ -3636,7 +3848,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-12-04T18:15:22+00:00"
+            "time": "2017-12-11T20:38:23+00:00"
         },
         {
             "name": "webmozart/assert",

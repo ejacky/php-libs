@@ -8,6 +8,7 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '950e8c5ec01dc90f029c243f73011631' => __DIR__ . '/..' . '/goaop/parser-reflection/src/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
@@ -60,6 +61,11 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         'H' => 
         array (
             'Hisune\\EchartsPHP\\' => 18,
+        ),
+        'G' => 
+        array (
+            'Go\\ParserReflection\\' => 20,
+            'Go\\' => 3,
         ),
         'F' => 
         array (
@@ -182,6 +188,14 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         array (
             0 => __DIR__ . '/..' . '/hisune/echarts-php/src',
         ),
+        'Go\\ParserReflection\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/goaop/parser-reflection/src',
+        ),
+        'Go\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/goaop/framework/src',
+        ),
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
@@ -286,6 +300,17 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
             'Doctrine\\Common\\Collections\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/collections/lib',
+            ),
+            'Dissect' => 
+            array (
+                0 => __DIR__ . '/..' . '/jakubledl/dissect/src',
+            ),
+        ),
+        'A' => 
+        array (
+            'AspectMock' => 
+            array (
+                0 => __DIR__ . '/..' . '/codeception/aspect-mock/src',
             ),
         ),
     );

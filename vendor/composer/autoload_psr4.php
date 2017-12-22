@@ -29,6 +29,8 @@ return array(
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'JsonSchema\\' => array($vendorDir . '/justinrainbow/json-schema/src/JsonSchema'),
     'Hisune\\EchartsPHP\\' => array($vendorDir . '/hisune/echarts-php/src'),
+    'Go\\ParserReflection\\' => array($vendorDir . '/goaop/parser-reflection/src'),
+    'Go\\' => array($vendorDir . '/goaop/framework/src'),
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
