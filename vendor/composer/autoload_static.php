@@ -54,6 +54,10 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         array (
             'Monolog\\' => 8,
         ),
+        'L' => 
+        array (
+            'Lcobucci\\JWT\\' => 13,
+        ),
         'J' => 
         array (
             'JsonSchema\\' => 11,
@@ -179,6 +183,10 @@ class ComposerStaticInited1870727e337fc27a61bfb0865431ad
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'Lcobucci\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lcobucci/jwt/src',
         ),
         'JsonSchema\\' => 
         array (

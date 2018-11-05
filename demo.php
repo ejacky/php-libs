@@ -1,6 +1,36 @@
 <?php
 
+var_dump(empty(0));
+exit;
+$ret = array_map(function ($sw_ip) {
+    return ['sw_ip' => $sw_ip];
+}, ['10.98.2.3', '192.168.1.3']);
+var_dump($ret);
+exit;
+$t = '[
+{"status":"OK","id":2321,"password":"f4f4489dcf95c16a31f9fb4ffff329fc","server":"pptpd"},
+{"status":"OK","id":2323,"password":"f4f4489dcf95c16a31f9fb4ffff329fc","server":"pptpd"}
+]';
+var_dump(json_decode($t, true));exit;
 
+//$_z = ip2long('0.0.0.0');
+//$_f = ip2long('255.255.255.255');
+//var_dump($_z);
+//var_dump($_f);
+//exit;
+//$ss = 'all';
+//var_dump(strtoupper($ss));
+
+//exit;
+$tt = array('dic' => ['user' => ['xx', 'yy', 'xx']]);
+$ss = array('dic' => ['user' => ['xx']]);
+$z = array_unique(array_merge($ss, $tt));
+var_dump($z);
+exit;
+$a = str_rot13('zhang');
+var_dump($a);
+var_dump(str_rot13($a));
+exit;
 include "vendor/autoload.php";
 error_reporting(E_ALL);
 

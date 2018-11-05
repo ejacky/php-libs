@@ -27,6 +27,7 @@ return array(
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'Pheanstalk\\' => array($vendorDir . '/pda/pheanstalk/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'Lcobucci\\JWT\\' => array($vendorDir . '/lcobucci/jwt/src'),
     'JsonSchema\\' => array($vendorDir . '/justinrainbow/json-schema/src/JsonSchema'),
     'Hisune\\EchartsPHP\\' => array($vendorDir . '/hisune/echarts-php/src'),
     'Go\\ParserReflection\\' => array($vendorDir . '/goaop/parser-reflection/src'),
